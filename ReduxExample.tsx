@@ -4,7 +4,7 @@ import { RootState, setName } from "./store";
 
 /* redux store 적용 예시 코드 */
 
-function ReduxEX() {
+function ReduxExample() {
 
   const name = useSelector((state: RootState) => state.name); // useSelector 훅 이용해 store에서 name 가져옴
   const dispatch = useDispatch(); // reducers 안에 있는 함수 사용하기 위해 사용하는 훅
@@ -16,9 +16,9 @@ function ReduxEX() {
   return (
     <View>
       <Text>{name}</Text>
-      <Button title="nameChange" onPress={() => nameClick('양하연')}></Button>
+      <Button title="nameChange" onPress={() => nameClick('양하연')} />
     </View>
   )
 }
 
-export { ReduxEX };
+export { ReduxExample };
