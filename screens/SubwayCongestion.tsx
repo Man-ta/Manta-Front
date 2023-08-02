@@ -18,7 +18,7 @@ const SubwayCongestion = () => {
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://172.30.1.91:8085/trains/congestion';
+    const apiUrl = 'http://192.168.0.115:8085/trains/congestion';
     const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
 
     // API 호출
