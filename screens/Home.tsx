@@ -1,6 +1,7 @@
 import { View, Text, StatusBar, StyleSheet, Button } from "react-native"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from "react";
 
 // 홈 화면
 const Home = ({ navigation } : {navigation : any}) => {
