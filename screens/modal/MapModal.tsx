@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { View, Text, Modal, Button, StyleSheet, Pressable, Image } from "react-native"
 
@@ -5,35 +6,39 @@ import { View, Text, Modal, Button, StyleSheet, Pressable, Image } from "react-n
 const MapModal = () => {
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);  // 모달의 초기 상태를 false로 설정하여 보이지 않게 함
+  const [selectedDay, setSelectedDay] = useState([0, 1]);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);  // 모달의 상태를 true로 바꿔 보이게 함
   }
 
+  const toggleDay = () => {
+    
+  }
+
   return (
-      <View>
-        <Button title="모달열기" onPress={toggleModal} />
+    <View>
+      <Button title="모달열기" onPress={toggleModal} />
       <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalConatiner}>
-
           <View style={styles.modal}>
 
+            {/* 날짜의 범위를 선택하는 모달의 헤더 */}
             <View style={styles.header}>
               <Pressable onPress={toggleModal} style={styles.closeButton}>
                 <Image source={require('../../assets/images/close-icon.png')} style={styles.closeIcon} />
-
               </Pressable>
-
               <View style={styles.dayView}>
-                <View style={styles.manyDaysSection}>
+                <Pressable onPress={toggleDay} style={styles.manyDaysSection}>
                   <Text style={styles.manyDays}>여러 날짜</Text>
-                </View>
-                <View style={styles.oneDaySection}>
+                </Pressable>
+                <Pressable onPress={toggleDay} style={styles.oneDaySection}>
                   <Text style={styles.oneDay}>하루</Text>
-                </View>
+                </Pressable>
               </View>
             </View>
 
+            {/* 모달의 주요 내용이 있는 영역 */}
             <View style={styles.contents}>
               <View style={styles.dateView}>
                 <Text style={styles.date}>날짜</Text>
@@ -41,20 +46,19 @@ const MapModal = () => {
                   2023-08-02 ~ 2023-08-06
                 </Text>
               </View>
-
               <Text style={styles.dotw}>요일</Text>
               <Text style={styles.selectedDotw}>
                 월요일, 화요일, 금요일
               </Text>
-
               <Text style={styles.hour}>시간</Text>
               <Text style={styles.selectedHour}>
                 10:00 ~ 19:00
               </Text>
             </View>
 
+            {/* 완료, 초기화 버튼이 있는 모달의 하단 영역 */}
             <View style={styles.footer}>
-              <View style={styles.check_view}>
+              <View style={styles.checkView}>
                 <Pressable onPress={toggleModal} style={styles.confirmButton}>
                   <Text style={styles.confirm}>완료</Text>
                 </Pressable>
@@ -63,10 +67,9 @@ const MapModal = () => {
                 </Pressable>
               </View>
             </View>
-
           </View>
         </View>
-        </Modal>
+      </Modal>
     </View>
   )
 }
@@ -110,7 +113,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f7f8',
     borderColor: '#f5f7f8',
     overflow: 'hidden',
-    width: '85%'
+    width: '85%',
+    height: '75%'
   },
   manyDaysSection: {
     flex: 1,
@@ -203,7 +207,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 45,
   },
-  check_view: {
+  checkView: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -211,7 +215,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     backgroundColor: '#2EB46B',
-    width:'60%',
+    width: '60%',
     padding: 16,
     marginRight: 10,
     borderRadius: 20,
