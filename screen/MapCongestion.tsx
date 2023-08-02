@@ -1,6 +1,7 @@
-import { View, Text, Button } from "react-native"
+import { View, Text, Button, Image } from "react-native"
 import { MapModal } from "./modal/MapModal";
 
+// 지도에 혼잡도를 보여주는 컴포넌트
 const MapCongestion = () => {
   return (
     <>

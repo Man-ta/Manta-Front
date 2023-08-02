@@ -14,7 +14,7 @@ const name = createSlice({
   // 리듀서 안에 state와 관련된 함수 작성(여러 개 가능)
   reducers: {
     setName(state, action) {  // state = state 그 자체, action = 파라미터
-      return action.payload;  // setname 함수에 들어온 파라미터로 name state를 변경
+      return action.payload;  // setName 함수에 들어온 파라미터로 name state를 변경
     }
   }
 })

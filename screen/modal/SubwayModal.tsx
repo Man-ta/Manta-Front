@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, Button, Modal, StyleSheet } from "react-native"
 
+// 열차의 각 칸의 혼잡도에 대한 정보를 보여줄 컴포넌트 
 const SubwayModal = () => {
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);  // 모달의 초기 상태를 false로 설정하여 보이지 않게 함
