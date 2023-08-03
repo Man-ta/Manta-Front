@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Home } from './screens/Home';
 import { MapCongestion } from './screens/MapCongestion';
 import { SubwayCongestion } from './screens/SubwayCongestion';
+import { Place } from './screens/Place';
+import { HourlyPlace } from './screens/HourlyPlace';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +19,9 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="MapCongestion" component={MapCongestion} />
           <Stack.Screen name="SubwayCongestion" component={SubwayCongestion} />
+          <Stack.Screen name="Place" component={Place} />
+          <Stack.Screen name="HourlyPlace" component={HourlyPlace} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

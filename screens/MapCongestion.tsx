@@ -31,6 +31,7 @@ const MapCongestion = () => {
     .then(response => {
       // API 응답 결과를 상태에 저장
       setApiResponse(response.data);
+      console.log(response.data)
     })
     .catch(error => {
       console.error('API 호출 에러:', error);

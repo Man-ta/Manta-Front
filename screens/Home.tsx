@@ -1,6 +1,7 @@
 import { View, Text, StatusBar, StyleSheet, Button } from "react-native"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from "react";
 
 // 홈 화면
 const Home = ({ navigation } : {navigation : any}) => {
@@ -11,6 +12,8 @@ const Home = ({ navigation } : {navigation : any}) => {
         <StatusBar />
         <Button title="장소 혼잡도 고" onPress={() => navigation.navigate('MapCongestion')} />
         <Button title="지하철 혼잡도 고" onPress={() => navigation.navigate('SubwayCongestion')} />
+        <Button title="실시간 혼잡도 고" onPress={() => navigation.navigate('HourlyPlace')} />
+        <Button title="제공가능장소 고" onPress={() => navigation.navigate('Place')} />
       </View>
     </>
   )
