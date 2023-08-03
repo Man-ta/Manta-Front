@@ -7,10 +7,7 @@ const MapCongestion = () => {
   return (
     <>
       <View>
-        <Text>
-          지도 혼잡도
           <MapModal />
-        </Text>
       </View>
     </>
   )

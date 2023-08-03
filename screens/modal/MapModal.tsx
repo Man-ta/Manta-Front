@@ -1,25 +1,51 @@
 import React from "react";
 import { useState } from "react";
-import { View, Text, Modal, Button, StyleSheet, Pressable, Image } from "react-native"
+import { View, Text, Modal, Button, StyleSheet, Pressable, Image, Platform } from "react-native"
+import { Calendar } from "react-native-calendars";
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 // 지도에서 혼잡도에 대한 정보를 필터링해서 볼 수 있도록 하는 컴포넌트
 const MapModal = () => {
 
-  const [modalVisible, setModalVisible] = useState<boolean>(false);  // 모달의 초기 상태를 false로 설정하여 보이지 않게 함
-  const [selectedDay, setSelectedDay] = useState([0, 1]);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);  // 필터링 모달의 on/off를 관리하는 state - 모달의 초기 상태를 false로 설정하여 보이지 않게 함
+  const [timePickerVisible, setTimePickerVisible] = useState<boolean>(false);  // 시간을 선택하는 모달의 onf/off를 관리하는 state
+  const [selectedDay, setSelectedDay] = useState<boolean>(false);
 
+  // 필터링 모달의 on/off 기능 - 모달의 상태를 true로 바꿔 보이게 함
   const toggleModal = () => {
-    setModalVisible(!modalVisible);  // 모달의 상태를 true로 바꿔 보이게 함
+    setModalVisible(!modalVisible);
   }
 
-  const toggleDay = () => {
-    
+  // 시간을 선택하는 모달의 on/off 기능
+  const toggleTimePicker = () => {
+    setTimePickerVisible(!timePickerVisible);
   }
+
+  // '여러 날짜' 영역과 '하루' 영역을 순환
+  const toggleManyDays = () => {
+    setSelectedDay((value) => !value)
+  }
+  const toggleDay = () => {
+    setSelectedDay((value) => !value)
+  }
+
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState<any>('time');
+
+  // timePicker의 값이 바뀔 때마다 출력
+  const onChange = (event: any, time: any) => {
+    const selectedTime = time;
+    setDate(selectedTime);
+    console.log(selectedTime + 9)
+  };
 
   return (
     <View>
+
       <Button title="모달열기" onPress={toggleModal} />
-      <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+      <Modal animationType="fade" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+        <View style={styles.backgroundTransparent}>
         <View style={styles.modalConatiner}>
           <View style={styles.modal}>
 
@@ -29,10 +55,10 @@ const MapModal = () => {
                 <Image source={require('../../assets/images/close-icon.png')} style={styles.closeIcon} />
               </Pressable>
               <View style={styles.dayView}>
-                <Pressable onPress={toggleDay} style={styles.manyDaysSection}>
+                  <Pressable onPress={toggleManyDays} style={selectedDay === false ? styles.manyDaysSection : styles.oneDaySection}>
                   <Text style={styles.manyDays}>여러 날짜</Text>
                 </Pressable>
-                <Pressable onPress={toggleDay} style={styles.oneDaySection}>
+                  <Pressable onPress={toggleDay} style={selectedDay === true ? styles.manyDaysSection : styles.oneDaySection}>
                   <Text style={styles.oneDay}>하루</Text>
                 </Pressable>
               </View>
@@ -41,19 +67,27 @@ const MapModal = () => {
             {/* 모달의 주요 내용이 있는 영역 */}
             <View style={styles.contents}>
               <View style={styles.dateView}>
-                <Text style={styles.date}>날짜</Text>
+                  <Text style={styles.date}>
+                    날짜
+                  </Text>
                 <Text style={styles.selectedDate}>
                   2023-08-02 ~ 2023-08-06
                 </Text>
               </View>
-              <Text style={styles.dotw}>요일</Text>
+                <Text style={styles.dotw}>
+                  요일
+                </Text>
               <Text style={styles.selectedDotw}>
                 월요일, 화요일, 금요일
               </Text>
-              <Text style={styles.hour}>시간</Text>
-              <Text style={styles.selectedHour}>
-                10:00 ~ 19:00
-              </Text>
+                <Text style={styles.hour}>
+                  시간
+                </Text>
+                <Pressable onPress={toggleTimePicker} style={styles.selectedHour}>
+                  <Text>
+                    10:00 ~ 19:00
+                  </Text>
+                </Pressable>
             </View>
 
             {/* 완료, 초기화 버튼이 있는 모달의 하단 영역 */}
@@ -69,12 +103,84 @@ const MapModal = () => {
             </View>
           </View>
         </View>
+
+          {/* 시간을 선택하는 timePicker 모달 */}
+          <Modal animationType="fade" transparent={true} visible={timePickerVisible} onRequestClose={() => setTimePickerVisible(false)}>
+            <View style={styles.backgroundTransparent}>
+              <View style={styles.timePicker}>
+                <DateTimePicker
+                  testID="timePicker"
+                  value={date}
+                  mode={mode}
+                  is24Hour={true}
+                  display="spinner"
+                  onChange={onChange}
+                />
+                <Pressable onPress={toggleTimePicker} style={styles.timePickerConfirmButton}>
+                  <Text style={styles.timePickerConfirm}>확인</Text>
+                </Pressable>
+              </View>
+              <Pressable onPress={toggleTimePicker} style={styles.timePickerCancelButton}>
+                <Text style={styles.timePickerCancel}>취소</Text>
+              </Pressable>
+            </View>
+          </Modal>
+
+        </View>
       </Modal>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    // flexDirection: 'column',
+    // alignItems: 'center',
+  },
+  timePicker: {
+    width: '95%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderColor: 'black',
+    left: 10,
+    position: 'absolute',
+    bottom: 110,
+  },
+  timePickerConfirmButton: {
+    height: '6.5%',
+    borderTopColor: '#f5f7f8',
+    paddingTop: 16,
+    paddingBottom: 16,
+    borderWidth: 1,
+    borderBottomColor: 'white',
+    borderLeftColor: 'white',
+    borderRightColor: 'white',
+  },
+  timePickerConfirm: {
+    color: '#2EB46B',
+    fontSize: 18,
+    flex: 1,
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
+  timePickerCancelButton: {
+    width: '95%',
+    height: '6.5%',
+    backgroundColor: 'white',
+    left: 10,
+    position: 'absolute',
+    borderRadius: 10,
+    bottom: 49,
+  },
+  timePickerCancel: {
+    color: '#2EB46B',
+    fontSize: 18,
+    flex: 1,
+    textAlign: 'center',
+    justifyContent: 'center',
+    paddingTop: 16,
+  },
   modalConatiner: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -242,14 +348,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center'
   },
-  btn: {
-    position: 'absolute',
-    top: -100,
-    left: 200,
-    borderWidth: 1,
-    borderColor: 'black',
-    width: 80,
-  }
+  // 모달이 올라오면 배경색을 투명하게 만듦
+  backgroundTransparent: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 흐림 효과를 위한 투명한 배경
+  },
 });
 
 export { MapModal };
