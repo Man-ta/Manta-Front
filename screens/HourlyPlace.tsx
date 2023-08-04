@@ -4,7 +4,7 @@ import { SubwayDetail } from "./modal/SubwayDetail";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// 지하철의 모든 노선을 보여주는 컴포넌트
+// 사용자가 조회한 장소의 시간대별 혼잡도를 제공 컴포넌트
 const HourlyPlace = () => {
 
   const [apiResponse, setApiResponse] = useState(null);
