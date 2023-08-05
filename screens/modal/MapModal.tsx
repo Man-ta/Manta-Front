@@ -120,7 +120,7 @@ const MapModal = () => {
 
   // '초기화' 버튼을 누르면 선택된 값을 모두 리셋
   const resetSelectedValue = () => {
-    setSelectedDate('선택')
+    setSelectedDates([])
     setSelectedDotw('선택')
     setSelectedTime('선택')
   }
