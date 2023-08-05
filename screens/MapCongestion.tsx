@@ -25,7 +25,6 @@ const MapCongestion = () => {
         appkey: 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES',
         'accept' : 'application/json',
         'Content-Type': 'application/json',
-
       },
     })
     .then(response => {
@@ -40,7 +39,6 @@ const MapCongestion = () => {
   useEffect(() => {
     handleApiCall();
   }, []);
-  
 
   return (
     <>
@@ -49,7 +47,6 @@ const MapCongestion = () => {
           실시간 장소 혼잡도
         </Text>
         <MapModal />
-
       </View>
     </>
   )
