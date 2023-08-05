@@ -12,6 +12,10 @@ const Home = ({ navigation } : {navigation : any}) => {
         <StatusBar />
         <Button title="장소 혼잡도 고" onPress={() => navigation.navigate('MapCongestion')} />
         <Button title="지하철 혼잡도 고" onPress={() => navigation.navigate('SubwayCongestion')} />
+        <Button title="실시간 혼잡도 고" onPress={() => navigation.navigate('HourlyPlace')} />
+        <Button title="제공가능장소 고" onPress={() => navigation.navigate('Place')} />
+        <Button title="통계성 혼잡도 고" onPress={() => navigation.navigate('Statisticaln')} />
+        <Button title="일자별 추정 방문자수 고" onPress={() => navigation.navigate('VisitorCount')} />
       </View>
     </>
   )

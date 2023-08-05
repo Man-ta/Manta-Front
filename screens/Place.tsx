@@ -3,34 +3,30 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MapModal } from "./modal/MapModal";
 
-// 실시간 장소혼잡도를 보여주는 컴포넌트
-const MapCongestion = () => {
+// 제공가능장소를 보여주는 컴포넌트
+const Place = () => {
 
   const [apiResponse, setApiResponse] = useState(null);
 
   const handleApiCall = () => {
-    // API 호출을 위한 파라미터 설정 (CongestionResponseDto 객체와 유사한 형식으로 설정)
-    const CongestionResponseDto = {
-      poiId : '10067845'
-    };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.35.57:8085/place/congestion';
+    const apiUrl = 'http://192.168.0.115:8085/place/data';
     const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
 
     // API 호출
     axios.get(apiUrl, {
-      params: CongestionResponseDto,
       headers: {
         appkey: 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES',
         'accept' : 'application/json',
         'Content-Type': 'application/json',
+
       },
     })
     .then(response => {
       // API 응답 결과를 상태에 저장
       setApiResponse(response.data);
-      console.log(response.data);
+      console.log(response.data)
     })
     .catch(error => {
       console.error('API 호출 에러:', error);
@@ -39,18 +35,17 @@ const MapCongestion = () => {
   useEffect(() => {
     handleApiCall();
   }, []);
+  
 
   return (
     <>
       <View>
         <Text>
-          실시간 장소 혼잡도
+          제공 가능 장소
         </Text>
-        <MapModal />
       </View>
     </>
   )
 }
 
-export { MapCongestion };
-
+export { Place };
