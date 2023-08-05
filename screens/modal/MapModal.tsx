@@ -79,8 +79,8 @@ const MapModal = () => {
 
   const markedDates = generateMarkedDates(selectedDates);
 
-  console.log(selectedDates[0])
-  console.log(selectedDates[1])
+  // console.log(selectedDates[0])
+  // console.log(selectedDates[1])
 
   // function addDates() {
   //   let obj = dates.reduce(
