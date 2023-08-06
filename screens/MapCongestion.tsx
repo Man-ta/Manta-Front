@@ -2,7 +2,6 @@ import { View, Text } from "react-native"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MapModal } from "./modal/MapModal";
-import React from "react";
 
 // 실시간 장소혼잡도를 보여주는 컴포넌트
 const MapCongestion = () => {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View, Text, Button, Modal, StyleSheet } from "react-native"
-
+import React from "react"
 // 특정 지하철역을 클릭하면 해당 지하철역의 상세정보를 화면 하단에 보여주는 컴포넌트 
 const SubwayDetail = () => {
 

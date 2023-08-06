@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Home } from './screens/Home';
 import { MapCongestion } from './screens/MapCongestion';
 import { SubwayCongestion } from './screens/SubwayCongestion';
-
+import React from 'react';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
