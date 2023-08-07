@@ -4,27 +4,32 @@ import { View, Text, Modal, Button, StyleSheet, Pressable, Image, Platform, Text
 import { Calendar } from "react-native-calendars";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, setSelectedDate, setSelectedDates, setSelectedDotw, setSelectedTime } from "../../store";
 
 // 지도에서 혼잡도에 대한 정보를 필터링해서 볼 수 있도록 하는 컴포넌트
 const MapModal = () => {
+
+  const dispatch = useDispatch();
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);  // 필터링 모달의 on/off를 관리하는 state - 모달의 초기 상태를 false로 설정하여 보이지 않게 함
   const [calendarVisible, setCalendarVisible] = useState<boolean>(false);  // 달력 모달의 on/off를 관리하는 state
   const [dotwVisible, setDotwVisible] = useState<boolean>(false);  // 요일 모달의 on/off를 관리하는 state
   const [timePickerVisible, setTimePickerVisible] = useState<boolean>(false);  // 시간을 선택하는 모달의 on/off를 관리하는 state
   const [whetherDay, setWhetherDay] = useState<boolean>(false);  // 모달에서 '여러 날짜' 혹은 '하루' 항목을 관리하는 state
-  const [selectedDates, setSelectedDates] = useState<string[]>([]);  // '여러 날짜' 달력에서 선택된 값들을 관리하는 state
-  const [selectedDate, setSelectedDate] = useState<string>('선택');  // '하루' 달력에서 선택된 값을 관리하는 state
-  const [selectedDotw, setSelectedDotw] = useState('선택');  // 요일 피커에서 선택된 요일을 관리하는 state
-  const [selectedTime, setSelectedTime] = useState('선택');  // 타임 피커에서 선택된 시간을 관리하는 state
-  const [changeModal, setChangeModal] = useState<boolean>(true);  // true, false에 따라 모달의 상태를 변경하는 state
 
+  const selectedDates = useSelector((state: RootState) => state.selectedDates);  // '여러 날짜' 달력에서 선택된 값들을 관리하는 state
+  const selectedDate = useSelector((state: RootState) => state.selectedDate);  // '하루' 달력에서 선택된 값을 관리하는 state
+  const selectedDotw = useSelector((state: RootState) => state.selectedDotw);  // 요일 피커에서 선택된 요일을 관리하는 state
+  const selectedTime = useSelector((state: RootState) => state.selectedTime);  // 타임 피커에서 선택된 시간을 관리하는 state
+
+  const [changeModal, setChangeModal] = useState<boolean>(true);  // true, false에 따라 모달의 상태를 변경하는 state
 
   // 달력에서 선택된 값을 state에 추가
   const addSelectedDates = (day: string) => {
     const dateString = day;
 
-    setSelectedDates((prevSelectedDates) => {
+    dispatch(setSelectedDates((prevSelectedDates: string[]) => {
       // 이미 선택된 날짜라면 선택 해제
       if (prevSelectedDates.includes(dateString)) {
         return prevSelectedDates.filter((date) => date !== dateString);
@@ -33,15 +38,15 @@ const MapModal = () => {
       else {
         return [...prevSelectedDates, dateString];
       }
-    });
+    }));
   };
 
   // 달력에서 선택된 값을 초기화
   const resetSelectedDates = () => {
-    setSelectedDates([]);
+    dispatch(setSelectedDates([]));
   }
   const resetSelectedDate = () => {
-    setSelectedDate('선택');
+    dispatch(setSelectedDate('선택'));
   }
 
   // 달력에서 사용할 markedDates를 생성하는 함수
@@ -120,9 +125,9 @@ const MapModal = () => {
 
   // '초기화' 버튼을 누르면 선택된 값을 모두 리셋
   const resetSelectedValue = () => {
-    setSelectedDates([])
-    setSelectedDotw('선택')
-    setSelectedTime('선택')
+    dispatch(setSelectedDates([]));
+    dispatch(setSelectedDotw('선택'));
+    dispatch(setSelectedTime('선택'));
   }
 
   // 달력 모달의 on/off 기능
@@ -156,13 +161,17 @@ const MapModal = () => {
     selectedValue = selectedValue + 9;
     selectedValue = JSON.stringify(selectedValue);
     selectedValue = selectedValue.slice(16, 22);
-    setSelectedTime(selectedValue)
+    dispatch(setSelectedTime(selectedValue));
   };
 
   return (
     <View style={styles.container}>
-
-      <Button title="모달열기" onPress={toggleModal} />
+      <Pressable onPress={toggleModal}>
+        <Text style={{ fontSize: 30, position: 'absolute', top: 100 }}>
+          모달열기
+        </Text>
+      </Pressable>
+      {/* <Button title="모달열기" onPress={toggleModal} /> */}
 
       {
         changeModal ? (
@@ -378,7 +387,7 @@ const MapModal = () => {
                       <View style={styles.calendarContainer}>
                         <Calendar
                           onDayPress={day => {
-                            setSelectedDate(day.dateString);
+                            dispatch(setSelectedDate(day.dateString));
                           }}
                           markedDates={{
                             [selectedDate]: { selected: true, disableTouchEvent: true }

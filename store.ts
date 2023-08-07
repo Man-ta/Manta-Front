@@ -1,31 +1,63 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 
-/* redux store 예시 코드 */
-
 // state들의 타입 지정
 export type RootState = {
-  name : string
+  selectedDate: string,
+  selectedDates: string[],
+  selectedDotw: any,
+  selectedTime: any,
 }
 
-const name = createSlice({
-  name: 'name', 
-  initialState: '이진우', // state의 첫 상태값
-
-  // 리듀서 안에 state와 관련된 함수 작성(여러 개 가능)
+const selectedDate = createSlice({
+  name: 'selectedDate',
+  initialState: '선택',
   reducers: {
-    setName(state, action) {  // state = state 그 자체, action = 파라미터
-      return action.payload;  // setName 함수에 들어온 파라미터로 name state를 변경
+    setSelectedDate(state, action) {
+      return action.payload;
+    }
+  }
+})
+
+const selectedDates = createSlice({
+  name: 'selectedDates',
+  initialState: [],
+  reducers: {
+    setSelectedDates(state, action) {
+      return action.payload;
+    }
+  }
+})
+
+const selectedDotw = createSlice({
+  name: 'selectedDotw',
+  initialState: '선택',
+  reducers: {
+    setSelectedDotw(state, action) {
+      return action.payload;
+    }
+  }
+})
+
+const selectedTime = createSlice({
+  name: 'selectedTime',
+  initialState: '선택',
+  reducers: {
+    setSelectedTime(state, action) {
+      return action.payload;
     }
   }
 })
 
 export default configureStore({
-  
-  // 리듀서 안에 {state 이름}: {state 이름}.reducer와 같은 형식으로 하나하나 적어줘야 함
   reducer: {
-    name: name.reducer
+    selectedDate: selectedDate.reducer,
+    selectedDates: selectedDates.reducer,
+    selectedDotw: selectedDotw.reducer,
+    selectedTime: selectedTime.reducer
   }
 })
 
-// state와 관련된 함수 모두 하나하나 export 해줘야 함
-export const { setName } = name.actions;
+export const { setSelectedDate } = selectedDate.actions;
+export const { setSelectedDates } = selectedDates.actions;
+export const { setSelectedDotw } = selectedDotw.actions;
+export const { setSelectedTime } = selectedTime.actions;
