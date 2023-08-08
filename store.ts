@@ -6,6 +6,7 @@ export type RootState = {
   selectedDates: string[],
   selectedDotw: any,
   selectedTime: any,
+  location: any,
 }
 
 const selectedDate = createSlice({
@@ -48,12 +49,28 @@ const selectedTime = createSlice({
   }
 })
 
+const location = createSlice({
+  name: 'location',
+  initialState: {
+    coords: {
+      latitude: 0,
+      longitude: 0,
+    },
+  },
+  reducers: {
+    setLocation(state, action) {
+      return action.payload;
+    },
+  },
+});
+
 export default configureStore({
   reducer: {
     selectedDate: selectedDate.reducer,
     selectedDates: selectedDates.reducer,
     selectedDotw: selectedDotw.reducer,
-    selectedTime: selectedTime.reducer
+    selectedTime: selectedTime.reducer,
+    location: location.reducer
   }
 })
 
@@ -61,3 +78,4 @@ export const { setSelectedDate } = selectedDate.actions;
 export const { setSelectedDates } = selectedDates.actions;
 export const { setSelectedDotw } = selectedDotw.actions;
 export const { setSelectedTime } = selectedTime.actions;
+export const { setLocation } = location.actions;
