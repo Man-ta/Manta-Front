@@ -1,8 +1,8 @@
-/* global Tmapv3 */
 import { View, Text } from "react-native";
 import { SubwayModal } from "./modal/SubwayModal";
 import { SubwayDetail } from "./modal/SubwayDetail";
 import React, { useState, useEffect } from "react";
+import { XMLParser } from "fast-xml-parser";
 import axios from "axios";
 
 // 첫 화면 지하철 노선도 불러오기
@@ -19,45 +19,79 @@ const SubwayCongestion = () => {
   const [trainData, setTrainData] = useState("");
   const [compartment, setCompartment] = useState<number[]>([]);
   //tmap 가져오기
-  const script = document.createElement("script");
-  script.src =
-    "https://apis.openapi.sk.com/tmap/vectorjs?version=1&appKey=GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES";
-  script.async = true;
+  const APP_KEY = "4b744f596a68617935346d58766468";
 
-  document.body.appendChild(script);
-  document.body.appendChild(script);
-  script.onload = () => {
-    // 지도 초기화 로직
-    let map;
+  //현재 시각 가져오기
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+ 
 
-    // Tmapv3.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
-    map = new Tmapv3.Map("map_div", {
-        center: new Tmapv3.LatLng(37.56520450, 126.98702028),
-        width: "100%",   // 지도의 넓이
-        height: "100px", // 지도의 높이
-        zoom: 16         // 지도 줌레벨
-    });
-};
+  // 검색역에 들어오고 있는 열차 번호를 서울공공데이터에서 가져오는 함수
+  const fetchStationData = async () => {
+    try {
+      const xhr = new XMLHttpRequest();
+      var url = `http://swopenapi.seoul.go.kr/api/subway/${APP_KEY}/xml/realtimeStationArrival/0/5/서울`; /* URL */
+      xhr.open("GET", url);
+      xhr.onreadystatechange = function () {
+        if (this.readyState == xhr.DONE) {
+          if (xhr.status == 200 || xhr.status == 201) {
+            let parser = new XMLParser();
+            let xmlDoc = parser.parse(this.responseText);
+            let trains = xmlDoc.realtimeStationArrival.row;
+            let closestTrain = trains[0]; // 첫 번째 열차로 가장 가까운 열차 초기화
+            for (let train of trains) {
+              if (train.statnNm === "서울") {
+                // 서울역에 도착하는 모든 열차
+                if (parseInt(train.barvlDt) < parseInt(closestTrain.barvlDt)) {
+                  // 현재 열차가 가장 가까운 열차보다 더 가깝다면
+                  closestTrain = train; // 가장 가까운 열차 업데이트
+                }
+              }
+            }
+            console.log("가장 먼저 도착예정인 열차: ", closestTrain.btrainNo); // 가장 먼저 도착 예정인 열차번호 출력
+          }
+        }
+      };
+      xhr.send("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  useEffect(() => {
-    fetchTrainData();
-  }, [trainData]);
-
+  // 열차의 혼잡도를 sk open ai에서 가져오는 함수
   const fetchTrainData = async () => {
     try {
       const appKey = "GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES";
       const response = await fetch(
-        "https://apis.openapi.sk.com/puzzle/subway/congestion/rltm/trains/2/2299",
+        "https://apis.openapi.sk.com/puzzle/subway/congestion/stat/car/stations/133?dow=TUE&hh=24",
         {
           headers: {
             appkey: appKey,
           },
         }
       );
-      // console.log(response);
       const data = await response.json();
-      setTrainData(data.data.congestionResult.congestionCar);
-      splitDataToArray(trainData);
+      console.log("출력값", data);
+      // 상행과 하행을 분리하여 저장할 배열을 선언
+      let upTrain = [];
+      let downTrain = [];
+
+      // 모든 열차 데이터에 대해 반복
+      // for(let train of data.contents) {
+      //   // 상행인 경우
+      //   if(train.stat.updnLine === 0) {
+      //     upTrain.push(train);
+      //   }
+      //   // 하행인 경우
+      //   else if(train.stat.updnLine === 1) {
+      //     downTrain.push(train);
+      //   }
+      // }
+
+      // // 가장 먼저 도착하는 열차 출력
+      // console.log("상행 첫 번째 열차:", upTrain[0]);
+      // console.log("하행 첫 번째 열차:", downTrain[0]);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -68,7 +102,10 @@ const SubwayCongestion = () => {
     const data = trainData.split("|").map((item) => parseInt(item, 10));
     setCompartment(data);
   }
-
+  // useEffect(() => {
+  //   fetchTrainData();
+  // }, [trainData]);
+  // fetchStationData();
   return (
     <>
       <View>

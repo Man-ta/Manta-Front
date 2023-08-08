@@ -11,7 +11,7 @@ const SubwayModal = ({ compartment }: { compartment: number[] }) => {
     setModalVisible(!modalVisible);
   };
 
-  // 각 값에 따라 "여유", "보통", "혼잡" 반환하는 함수
+  // 각 값에 따라 "여유", "보통", "혼잡" 반환
   const getCongestionStatus = (value: number) => {
     if (value <= 34) {
       return "여유";
@@ -22,7 +22,7 @@ const SubwayModal = ({ compartment }: { compartment: number[] }) => {
     }
   };
 
-  // 스타일을 동적으로 반환하는 함수
+  // 색 반환
   const getCongestionStyle = (value: number) => {
     if (value <= 34) {
       return styles.greenText;
@@ -31,7 +31,7 @@ const SubwayModal = ({ compartment }: { compartment: number[] }) => {
     } else {
       return styles.redText;
     }
-  };
+  }; 
 
   return (
     <>
@@ -62,6 +62,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 20,
     marginTop: 300,
+    flexDirection: 'row',
+    alignItems: 'center', 
+    margin: 10, 
   },
   greenText: {
     color: "green",

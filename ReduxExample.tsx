@@ -2,6 +2,7 @@ import { View, Text, Button } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, setName } from "./store";
 import React from "react";
+
 /* redux store 적용 예시 코드 */
 
 function ReduxExample() {

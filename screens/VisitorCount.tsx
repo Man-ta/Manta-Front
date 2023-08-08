@@ -1,10 +1,8 @@
 import { View, Text } from "react-native"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MapModal } from "./modal/MapModal";
 
-// 실시간 장소혼잡도를 보여주는 컴포넌트
-const MapCongestion = () => {
+const VisitorCount = () => {
 
   const [apiResponse, setApiResponse] = useState(null);
 
@@ -15,7 +13,7 @@ const MapCongestion = () => {
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.35.57:8085/place/congestion';
+    const apiUrl = 'http://192.168.0.115:8085/place/visitor';
     const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
 
     // API 호출
@@ -25,32 +23,32 @@ const MapCongestion = () => {
         appkey: 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES',
         'accept' : 'application/json',
         'Content-Type': 'application/json',
+
       },
     })
     .then(response => {
       // API 응답 결과를 상태에 저장
       setApiResponse(response.data);
-      console.log(response.data);
+      console.log(response.data)
     })
     .catch(error => {
       console.error('API 호출 에러:', error);
     });
   };
   useEffect(() => {
-    handleApiCall();
+    handleApiCall();    
   }, []);
+  
 
   return (
     <>
       <View>
         <Text>
-          실시간 장소 혼잡도
+        일자별 추정 방문자수
         </Text>
-        <MapModal />
       </View>
     </>
   )
 }
 
-export { MapCongestion };
-
+export { VisitorCount };
