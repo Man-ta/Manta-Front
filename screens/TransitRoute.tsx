@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DatePicker } from './modal/Picker'
 
-const SubwayCongestion = () => {
+const TransitRoute = () => {
 
   const [apiResponse, setApiResponse] = useState(null);
   const [congestionData, setCongestionData] = useState([]);
@@ -51,7 +51,7 @@ const SubwayCongestion = () => {
     <>
       <View>
         <Text>
-          지하철 혼잡도
+          대중교통 경로 고
         </Text>
         <SubwayModal />
         <SubwayDetail />
@@ -60,4 +60,4 @@ const SubwayCongestion = () => {
   )
 }
 
-export { SubwayCongestion };
+export { TransitRoute };
