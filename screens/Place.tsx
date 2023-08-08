@@ -11,7 +11,7 @@ const Place = () => {
   const handleApiCall = () => {
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.0.115:8085/place/data';
+    const apiUrl = 'http://43.201.115.180:8085/place/data';
     const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
 
     // API 호출

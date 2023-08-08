@@ -4,6 +4,8 @@ import axios from 'axios';
 import { MapModal } from "./modal/MapModal";
 import GoogleMap from "./GoogleMap";
 
+
+
 // 실시간 장소혼잡도를 보여주는 컴포넌트
 const MapCongestion = () => {
 
@@ -16,7 +18,7 @@ const MapCongestion = () => {
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.35.57:8085/place/congestion';
+    const apiUrl = 'http://43.201.115.180:8085/place/congestion';
     const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
 
     // API 호출
@@ -49,12 +51,16 @@ const MapCongestion = () => {
     setExplainVisible(!explainVisible);
   }
 
+  const setCurrentLocation = () => {
+    console.log("님아 님아")
+  }
+
   return (
     <>
       <View style={styles.container}>
 
         <GoogleMap />
-        <MapModal />
+        {/* <MapModal /> */}
 
         {/* 우측 상단 물음표 아이콘 */}
         <Pressable onPress={toggleExplainModal} style={styles.questionButton}>
@@ -79,6 +85,10 @@ const MapCongestion = () => {
             </View>
           </View>
         </Modal>
+
+        <Pressable onPress={setCurrentLocation} style={styles.locationButton}>
+          <Image source={require('../assets/images/location-icon.png')} style={styles.locationIcon} />
+        </Pressable>
 
         {/* 우측 하단 혼잡 레벨에 관한 모달 */}
         <View style={styles.infoView}>
@@ -168,6 +178,16 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 7,
+  },
+  locationButton: {
+    position: 'absolute',
+    bottom: 37,
+    left: 36,
+    zIndex: 1,
+  },
+  locationIcon: {
+    width: 45,
+    height: 45,
   },
   infoView: {
     position: 'absolute',
