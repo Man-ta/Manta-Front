@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, Pressable, Modal } from "react-native"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MapModal } from "./modal/MapModal";
+import GoogleMap from "./GoogleMap";
 
 // 실시간 장소혼잡도를 보여주는 컴포넌트
 const MapCongestion = () => {
@@ -11,7 +12,7 @@ const MapCongestion = () => {
   const handleApiCall = () => {
     // API 호출을 위한 파라미터 설정 (CongestionResponseDto 객체와 유사한 형식으로 설정)
     const CongestionResponseDto = {
-      poiId : '10067845'
+      poiId: '10067845'
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
@@ -23,18 +24,18 @@ const MapCongestion = () => {
       params: CongestionResponseDto,
       headers: {
         appkey: 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES',
-        'accept' : 'application/json',
+        'accept': 'application/json',
         'Content-Type': 'application/json',
       },
     })
-    .then(response => {
-      // API 응답 결과를 상태에 저장
-      setApiResponse(response.data);
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.error('API 호출 에러:', error);
-    });
+      .then(response => {
+        // API 응답 결과를 상태에 저장
+        setApiResponse(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error('API 호출 에러:', error);
+      });
   };
   useEffect(() => {
     handleApiCall();
@@ -52,6 +53,7 @@ const MapCongestion = () => {
     <>
       <View style={styles.container}>
 
+        <GoogleMap />
         <MapModal />
 
         {/* 우측 상단 물음표 아이콘 */}
@@ -74,7 +76,7 @@ const MapCongestion = () => {
                 * 혼잡도는 특정 장소의 추정 방문자 수를 연면적('㎡')으로 나눈 값으로, 단위 면적('㎡')당 추정 방문자의 수를 의미합니다. {'\n'}
                 직관적인 이해를 위해 수준을 총 4단계로 구분하여 제공합니다.
               </Text>
-          </View>
+            </View>
           </View>
         </Modal>
 
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
   closeIcon: {
     width: 15,
     height: 15,
-  },  
+  },
   explainView: {
     backgroundColor: 'white',
     borderRadius: 10,

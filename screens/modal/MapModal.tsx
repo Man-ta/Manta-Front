@@ -28,17 +28,18 @@ const MapModal = () => {
   // 달력에서 선택된 값을 state에 추가
   const addSelectedDates = (day: string) => {
     const dateString = day;
+    dispatch(setSelectedDates([...selectedDates, dateString]));
 
-    dispatch(setSelectedDates((prevSelectedDates: string[]) => {
-      // 이미 선택된 날짜라면 선택 해제
-      if (prevSelectedDates.includes(dateString)) {
-        return prevSelectedDates.filter((date) => date !== dateString);
-      }
-      // 새로운 날짜를 선택한 경우 선택된 날짜에 추가
-      else {
-        return [...prevSelectedDates, dateString];
-      }
-    }));
+    // dispatch(setSelectedDates((prevSelectedDates: string[]) => {
+    //   // 이미 선택된 날짜라면 선택 해제
+    //   if (prevSelectedDates.includes(dateString)) {
+    //     return prevSelectedDates.filter((date) => date !== dateString);
+    //   }
+    //   // 새로운 날짜를 선택한 경우 선택된 날짜에 추가
+    //   else {
+    //     return [...prevSelectedDates, dateString];
+    //   }
+    // }));
   };
 
   // 달력에서 선택된 값을 초기화
@@ -275,7 +276,7 @@ const MapModal = () => {
                       <Picker
                         selectedValue={selectedDotw}
                         onValueChange={
-                          (itemValue, itemIndex) => setSelectedDotw(itemValue)
+                          (itemValue, itemIndex) => dispatch(setSelectedDotw(itemValue))
                         }>
                         <Picker.Item label="월요일" value="월요일" />
                         <Picker.Item label="화요일" value="화요일" />
@@ -417,6 +418,14 @@ const MapModal = () => {
 
     </View>
   )
+}
+
+const manyDatesModal = () => {
+
+}
+
+const DateModal = () => {
+  
 }
 
 const styles = StyleSheet.create({
