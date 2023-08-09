@@ -1,59 +1,85 @@
 import React, { useEffect, useState } from "react";
 import MapView from "react-native-maps";
-import { Alert, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { setLocation } from "../store";
 
-export default function GoogleMap() {
+export default function LocationExample() {
 
-  // const [location, setLocation] = useState<any>('');
+  const dispatch = useDispatch();
 
-  const location = useSelector((state: RootState) => state.location);
-
-  const [errorMsg, setErrorMsg] = useState('');
+  const location = useSelector((state: RootState) => state.location);  // 사용자의 위치 정보를 저장하는 state
+  const [mapRegion, setMapRegion] = useState({  // 사용자의 초기 위치 정보를 저장하는 state
+    latitude: location.latitude,
+    longitude: location.longitude,
+  });
+  const [temp, setTemp] = useState('');
+  const [loading, setLoading] = useState(true);  // 위치 정보를 렌더링하는 동안 로딩을 표시하기 위한 state
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
+    (
+      async () => {
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
+        let { status } = await Location.requestForegroundPermissionsAsync();  // 위치 정보 열람에 대한 권한을 받아와서 status에 저장
+        console.log("승인 여부 : " + status);
+
+        // 사용자의 위치 정보를 받아와서 state에 저장
+        let userLocation = await Location.getCurrentPositionAsync({});
+        const { latitude, longitude } = userLocation.coords;
+        dispatch(setLocation({ latitude, longitude }));
+
+        setLoading(false);  // 위치 정보를 받아왔으니 로딩 상태를 false로 변경
+
+      })();
   }, []);
 
-  let text: any = "Waiting..";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = { Latitude: location.coords.latitude, Longitude: location.coords.longitude };
-    console.log(text)
+
+
+  const onRegionChange = (region: any) => {
+    // setLocation({"latitude": region.latitude, "longitude": region.longitude});
+    // console.log(region.latitude + " + " + region.longitude);
   }
+
+  // console.log(location);
+  // console.log(temp);
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: 37.44796396423006,
-          longitude: 126.64947445180182,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
-        }}
-      />
+      {
+        loading ? (
+          <ActivityIndicator style={styles.activityIndicator} />
+        ) :
+          (
+            <MapView
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+              region={
+                {
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                  latitudeDelta: 0.006,
+                  longitudeDelta: 0.006
+                }
+              }
+              onRegionChange={onRegionChange}
+            />
+          )
+      }
     </View>
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   map: {
     width: "100%",

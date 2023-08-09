@@ -20,14 +20,14 @@ const SubwayCongestion = () => {
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://43.201.115.180:8085/trains/congestion';
-    const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
+    const apiUrl = 'http://192.168.10.80:8085/trains/congestion';
+    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
 
     // API 호출
     axios.get(apiUrl, {
       params: trainResponseDto,
       headers: {
-        appkey: 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES',
+        appkey: '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf',
         'accept' : 'application/json',
         'Content-Type': 'application/json',
 
@@ -36,7 +36,7 @@ const SubwayCongestion = () => {
     .then(response => {
       // API 응답 결과를 상태에 저장
       setApiResponse(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     })
     .catch(error => {
       console.error('API 호출 에러:', error);
