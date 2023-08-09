@@ -9,6 +9,8 @@ import { Place } from './screens/Place';
 import { HourlyPlace } from './screens/HourlyPlace';
 import { Statisticaln } from './screens/Statisticaln';
 import { VisitorCount } from './screens/VisitorCount';
+import { PoiSearch } from './screens/PoiSearch';
+import { Lost } from './screens/Lost';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +27,8 @@ export default function App() {
           <Stack.Screen name="HourlyPlace" component={HourlyPlace} />
           <Stack.Screen name="Statisticaln" component={Statisticaln} />
           <Stack.Screen name="VisitorCount" component={VisitorCount} />
+          <Stack.Screen name="PoiSearch" component={PoiSearch} />
+          <Stack.Screen name="Lost" component={Lost} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
