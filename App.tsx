@@ -9,6 +9,7 @@ import { Place } from './screens/Place';
 import { HourlyPlace } from './screens/HourlyPlace';
 import { Statisticaln } from './screens/Statisticaln';
 import { VisitorCount } from './screens/VisitorCount';
+import { TransitRoute } from './screens/TransitRoute';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ export default function App() {
           <Stack.Screen name="HourlyPlace" component={HourlyPlace} />
           <Stack.Screen name="Statisticaln" component={Statisticaln} />
           <Stack.Screen name="VisitorCount" component={VisitorCount} />
+          <Stack.Screen name="TransitRoute" component={TransitRoute} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

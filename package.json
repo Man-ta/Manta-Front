@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
-  "proxy": "http://13.125.250.201:8085",
+  "proxy": "http://192.168.35.57:8085",
   "dependencies": {
     "@jiggag/react-native-kakao-maps": "^0.0.10",
     "@react-native-community/datetimepicker": "^7.4.1",
