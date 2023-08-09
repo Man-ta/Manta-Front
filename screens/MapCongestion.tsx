@@ -1,12 +1,13 @@
-import { View, Text, StyleSheet, Image, Pressable, Modal } from "react-native"
+import { View, Text, StyleSheet, Image, Pressable, Modal, TextInput, TouchableHighlight } from "react-native"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MapModal } from "./modal/MapModal";
 import GoogleMap from "./GoogleMap";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, setLocation, setSearchedName } from "../store";
 
 
-
-// 실시간 장소혼잡도를 보여주는 컴포넌트
+// 실시간 장소 혼잡도를 보여주는 컴포넌트
 const MapCongestion = () => {
 
   const [apiResponse, setApiResponse] = useState(null);
@@ -18,14 +19,16 @@ const MapCongestion = () => {
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.45.29:8085/place/congestion';
-    const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
+    const apiUrl = 'http://192.168.10.80:8085/place/congestion';
+    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
+    // const apiUrl = 'http://192.168.45.29:8085/place/congestion';
+    // const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
 
     // API 호출
     axios.get(apiUrl, {
       params: CongestionResponseDto,
       headers: {
-        appkey: 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES',
+        appkey: '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf',
         'accept': 'application/json',
         'Content-Type': 'application/json',
       },
@@ -43,16 +46,29 @@ const MapCongestion = () => {
     handleApiCall();
   }, []);
 
+  console.log(apiResponse);
+
   // ----------------------------------------------------------------------------------------------------------------------------------------------
 
+  const dispatch = useDispatch();
+
   const [explainVisible, setExplainVisible] = useState<boolean>(false);  // 혼잡 레벨에 대해 상세 설명이 있는 모달에 관한 on/off를 관리하는 state
+  const location = useSelector((state: RootState) => state.location);
+  const searchedName = useSelector((state: RootState) => state.searchedName);
+
+  // searchedName의 state를 TextInput에 입력한 글자로 바꿈
+  const textChange = (text: string) => {
+    dispatch(setSearchedName(text));
+  }
 
   const toggleExplainModal = () => {
     setExplainVisible(!explainVisible);
   }
 
+  // {"latitude": 37.44789568747357, "longitude": 126.64944946904347}
   const setCurrentLocation = () => {
-    console.log("님아 님아")
+    // dispatch(setLocation(location));
+    console.log("클릭")
   }
 
   return (
@@ -62,10 +78,30 @@ const MapCongestion = () => {
         <GoogleMap />
         {/* <MapModal /> */}
 
+        {/* 상단 검색영역  */}
+        <View style={styles.searchContainer}>
+          <View style={styles.searchView}>
+            <Image source={require('../assets/images/search-icon.png')} style={styles.searchIcon} />
+            <TextInput
+              placeholder="장소를 검색하세요!"
+              value={searchedName}
+              onChangeText={textChange}
+              style={styles.searchText} />
+          </View>
+        </View>
+
         {/* 우측 상단 물음표 아이콘 */}
         <Pressable onPress={toggleExplainModal} style={styles.questionButton}>
           <Image source={require('../assets/images/question-icon.png')} style={styles.questionIcon} />
         </Pressable>
+
+        <View style={styles.balloonContainer}>
+          <View style={styles.balloon}>
+            <Text style={styles.ballon_levelTwo}>보통</Text>
+            <Text style={styles.ballonText}>롯데백화점 인천점</Text>
+          </View>
+          <View style={styles.arrow} />
+        </View>
 
         {/* 혼잡 레벨에 대해 상세 설명이 있는 모달 */}
         <Modal animationType="none" transparent={true} visible={explainVisible} onRequestClose={() => setExplainVisible(false)}>
@@ -86,6 +122,7 @@ const MapCongestion = () => {
           </View>
         </Modal>
 
+        {/* 사용자의 현재 위치로 이동하는 아이콘 */}
         <Pressable onPress={setCurrentLocation} style={styles.locationButton}>
           <Image source={require('../assets/images/location-icon.png')} style={styles.locationIcon} />
         </Pressable>
@@ -113,14 +150,129 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  searchContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    position: 'absolute',
+    width: '83%',
+    height: 42,
+    top: 12,
+    left: 15,
+    backgroundColor: 'white',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    borderColor: '#999999',
+  },
+  searchView: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  searchText: {
+    fontSize: 16,
+    left: 31,
+    justifyContent: 'center',
+  },
+  searchIcon: {
+    position: 'absolute',
+    flex: 1,
+    justifyContent: 'center',
+    left: 11,
+    width: 14,
+    height: 14,
+  },
   questionButton: {
     position: 'absolute',
-    top: 15,
+    top: 21,
     right: 14,
   },
   questionIcon: {
     width: 20,
     height: 20,
+  },
+  balloonContainer: {
+    position: 'absolute',
+    top: 120,
+    left: 20,
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  balloon: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: "white",
+    opacity: 0.95,
+    height: 40,
+    padding: 10,
+    paddingRight: 14,
+    borderRadius: 10,
+  },
+  ballon_levelOne: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: 'bold',
+    backgroundColor: '#C2F5EF',
+    height: 24,
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: '#C2F5EF',
+    overflow: 'hidden',
+    textAlign: 'center',
+  },
+  ballon_levelTwo: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: 'bold',
+    backgroundColor: '#7BD1D1',
+    height: 24,
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: '#7BD1D1',
+    overflow: 'hidden',
+    textAlign: 'center',
+  },
+  ballon_levelThree: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: 'bold',
+    backgroundColor: '#F5B06C',
+    height: 24,
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: '#F5B06C',
+    overflow: 'hidden',
+    textAlign: 'center',
+  },
+  ballon_levelFour: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: 'bold',
+    backgroundColor: '#D36E85',
+    height: 24,
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: '#D36E85',
+    overflow: 'hidden',
+    textAlign: 'center',
+  },
+  ballonText: {
+    fontSize: 15,
+    left: 5,
+  },
+  arrow: {
+    opacity: 0.95,
+    borderLeftWidth: 10,
+    borderRightWidth: 10,
+    borderTopWidth: 18,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderTopColor: "white",
   },
   explainContainer: {
     flex: 1,
@@ -144,7 +296,7 @@ const styles = StyleSheet.create({
     height: 192,
     paddingTop: 20,
     justifyContent: 'center',
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: '#CBCBCB'
   },
   ex_levelOne: {
@@ -193,9 +345,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 80,
     height: 161,
-    bottom: 40,
+    bottom: 32,
     left: '72%',
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderRadius: 7,
     borderColor: '#CBCBCB',
     backgroundColor: 'white',

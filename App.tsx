@@ -9,9 +9,11 @@ import { Place } from './screens/Place';
 import { HourlyPlace } from './screens/HourlyPlace';
 import { Statisticaln } from './screens/Statisticaln';
 import { VisitorCount } from './screens/VisitorCount';
+import React from 'react';
 import { PoiSearch } from './screens/PoiSearch';
 import { Lost } from './screens/Lost';
 import { TransitRoute } from './screens/TransitRoute';
+
 
 const Stack = createNativeStackNavigator();
 
