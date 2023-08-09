@@ -16,6 +16,7 @@ const Home = ({ navigation } : {navigation : any}) => {
         <Button title="제공가능장소 고" onPress={() => navigation.navigate('Place')} />
         <Button title="통계성 혼잡도 고" onPress={() => navigation.navigate('Statisticaln')} />
         <Button title="일자별 추정 방문자수 고" onPress={() => navigation.navigate('VisitorCount')} />
+        <Button title="대중교통 경로 고" onPress={() => navigation.navigate('TransitRoute')} />
       </View>
     </>
   )
