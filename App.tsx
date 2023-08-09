@@ -4,13 +4,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Home } from "./screens/Home";
 import React from "react";
 import { Place } from "./screens/Place";
-import { HourlyPlace } from "./screens/HourlyPlace";
-import { Statisticaln } from "./screens/Statisticaln";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import LostItem from "./screens/LostItem";
 import { SafeAreaView, StatusBar } from "react-native";
+import { MapCongestion } from "./screens/MapCongestion";
+import { SubwayCongestion } from "./screens/SubwayCongestion";
 
 const Tab = createBottomTabNavigator();
 
@@ -75,11 +75,11 @@ export default function App() {
                 }}
               />
               <Tab.Screen
-                name="HourlyPlace"
-                component={HourlyPlace}
+                name="MapCongestion"
+                component={MapCongestion}
                 options={{
                   headerShown: false,
-                  title: "지역혼잡도",
+                  title: "장소혼잡도",
                   tabBarIcon: ({ size, focused }) => (
                     <Image
                       style={{ width: size, height: size }}
@@ -93,8 +93,8 @@ export default function App() {
                 }}
               />
               <Tab.Screen
-                name="Statisticaln"
-                component={Statisticaln}
+                name="SubwayCongestion"
+                component={SubwayCongestion}
                 options={{
                   headerShown: false,
                   title: "역별 혼잡도",
