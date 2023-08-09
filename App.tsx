@@ -12,6 +12,7 @@ import { VisitorCount } from './screens/VisitorCount';
 import { PoiSearch } from './screens/PoiSearch';
 import { Lost } from './screens/Lost';
 import { TransitRoute } from './screens/TransitRoute';
+import { PoiDetail } from './screens/PoiDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ export default function App() {
           <Stack.Screen name="PoiSearch" component={PoiSearch} />
           <Stack.Screen name="Lost" component={Lost} />
           <Stack.Screen name="TransitRoute" component={TransitRoute} />
+          <Stack.Screen name="PoiDetail" component={PoiDetail} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
