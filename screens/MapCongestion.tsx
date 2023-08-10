@@ -75,7 +75,7 @@ const MapCongestion = () => {
     <>
       <View style={styles.container}>
 
-        <GoogleMap />
+       
         {/* <MapModal /> */}
 
         {/* 상단 검색영역  */}

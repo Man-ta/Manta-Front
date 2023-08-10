@@ -13,6 +13,7 @@ import React from 'react';
 import { PoiSearch } from './screens/PoiSearch';
 import { Lost } from './screens/Lost';
 import { TransitRoute } from './screens/TransitRoute';
+import { NativeBaseProvider } from 'native-base';
 
 
 const Stack = createNativeStackNavigator();
@@ -20,6 +21,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     // 컴포넌트 가장 바깥에서 Provider로 감싸주기
+    <NativeBaseProvider>
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
@@ -36,5 +38,6 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
+    </NativeBaseProvider>
   );
 }
