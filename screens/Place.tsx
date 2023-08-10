@@ -1,39 +1,34 @@
-import { View, Text } from "react-native"
+import { View, Text } from "react-native";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MapModal } from "./modal/MapModal";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setPlacesList } from "../store";
-
+import { RootState, setPlacesList, setPoiIdList } from "../store";
 
 // 제공가능장소를 보여주는 컴포넌트
 const Place = () => {
 
   const dispatch = useDispatch();
 
-  const [apiResponse, setApiResponse] = useState([[]]);
+  const [apiResponse, setApiResponse] = useState('');
   const placesList = useSelector((state: RootState) => state.placesList);
+  const poiIdList = useSelector((state: RootState) => state.poiIdList);
+  const [count, setCount] = useState();
 
   const handleApiCall = () => {
-
-    // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/data';
-    // const apiUrl = 'http://192.168.45.29:8085/place/data';
-    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
+    const appKey = 'GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES';
 
-    // API 호출
     axios.get(apiUrl, {
       headers: {
-        appkey: '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf',
-        'accept' : 'application/json',
+        appkey: 'GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES',
+        'accept': 'application/json',
         'Content-Type': 'application/json',
       },
     })
     .then(response => {
-      // API 응답 결과를 상태에 저장
-      setApiResponse(response.data);
-      dispatch(setPlacesList(response.data));
-      console.log(JSON.stringify(response.data))
+      setApiResponse(JSON.stringify(response.data.contents)); 
+      dispatch(setPlacesList(response.data.contents)); 
+      console.log(response.data.status)
     })
     .catch(error => {
       console.error('API 호출 에러:', error);
@@ -44,21 +39,24 @@ const Place = () => {
     handleApiCall();
   }, []);
 
-  // console.log(apiResponse[1]);
-  console.log(typeof placesList)
+  useEffect(() => {
+    const poiIdArray = placesList.map((item: { poiId: string; }) => ({ poiId: item.poiId }));
+    dispatch(setPoiIdList(poiIdArray));
+  }, []);
 
-  console.log("------------------------------------------------------------------------------------")
-  
+  // console.log(poiIdList)
+
+  // console.log(poiIdList[0].poiId);
 
   return (
     <>
       <View>
         <Text>
-          제공 가능 장소
+          제공 가능 장소: {poiIdList.join(', ')} 배열을 쉼표로 연결하여 출력
         </Text>
       </View>
     </>
-  )
+  );
 }
 
 export { Place };

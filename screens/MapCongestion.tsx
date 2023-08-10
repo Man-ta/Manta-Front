@@ -4,49 +4,49 @@ import axios from 'axios';
 import { MapModal } from "./modal/MapModal";
 import GoogleMap from "./GoogleMap";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setLocation, setSearchedName } from "../store";
+import { RootState, setLocation, setSearchedName, setPoiIdList } from "../store";
 
 
 // 실시간 장소 혼잡도를 보여주는 컴포넌트
 const MapCongestion = () => {
 
-  const [apiResponse, setApiResponse] = useState(null);
+  const [apiResponse, setApiResponse] = useState('');
+  const poiIdList = useSelector((state: RootState) => state.poiIdList);
+  const arr = ["497342", "5411247", "219821"]
 
-  const handleApiCall = () => {
-    // API 호출을 위한 파라미터 설정 (CongestionResponseDto 객체와 유사한 형식으로 설정)
+  // console.log("poiIDList : ", poiIdList)
+
+  const handleApiCall = (poiId: string) => {
     const CongestionResponseDto = {
-      poiId: '10067845'
+      poiId: poiId,
     };
 
-    // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/congestion';
-    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
-    // const apiUrl = 'http://192.168.45.29:8085/place/congestion';
-    // const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
+    const appKey = 'GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES';
 
-    // API 호출
     axios.get(apiUrl, {
       params: CongestionResponseDto,
       headers: {
-        appkey: '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf',
+        appkey: appKey,
         'accept': 'application/json',
         'Content-Type': 'application/json',
       },
     })
       .then(response => {
-        // API 응답 결과를 상태에 저장
-        setApiResponse(response.data);
-        console.log(JSON.stringify(response.data));
+        setApiResponse(JSON.stringify(response.data));
       })
       .catch(error => {
         console.error('API 호출 에러:', error);
       });
   };
+
   useEffect(() => {
-    handleApiCall();
+    handleApiCall("497342");
   }, []);
 
   console.log(apiResponse);
+
+  // console.log(poiIdList[0].poiId)
 
   // ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ const MapCongestion = () => {
   // {"latitude": 37.44789568747357, "longitude": 126.64944946904347}
   const setCurrentLocation = () => {
     // dispatch(setLocation(location));
-    console.log("클릭")
+    // console.log("클릭")
   }
 
   return (
@@ -86,7 +86,8 @@ const MapCongestion = () => {
               placeholder="장소를 검색하세요!"
               value={searchedName}
               onChangeText={textChange}
-              style={styles.searchText} />
+              style={styles.searchText}
+            />
           </View>
         </View>
 
@@ -95,9 +96,10 @@ const MapCongestion = () => {
           <Image source={require('../assets/images/question-icon.png')} style={styles.questionIcon} />
         </Pressable>
 
+        {/* 장송 대한 정보가 있는 툴팁 */}
         <View style={styles.balloonContainer}>
           <View style={styles.balloon}>
-            <Text style={styles.ballon_levelTwo}>보통</Text>
+            <Text style={styles.ballon_levelThree}>혼잡</Text>
             <Text style={styles.ballonText}>롯데백화점 인천점</Text>
           </View>
           <View style={styles.arrow} />
@@ -213,12 +215,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
     fontWeight: 'bold',
-    backgroundColor: '#C2F5EF',
+    backgroundColor: '#ACF1E9',
     height: 24,
     padding: 5,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#C2F5EF',
+    borderColor: '#ACF1E9',
     overflow: 'hidden',
     textAlign: 'center',
   },
@@ -226,12 +228,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
     fontWeight: 'bold',
-    backgroundColor: '#7BD1D1',
+    backgroundColor: '#54B2B2',
     height: 24,
     padding: 5,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#7BD1D1',
+    borderColor: '#54B2B2',
     overflow: 'hidden',
     textAlign: 'center',
   },
@@ -239,12 +241,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
     fontWeight: 'bold',
-    backgroundColor: '#F5B06C',
+    backgroundColor: '#F39C46',
     height: 24,
     padding: 5,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#F5B06C',
+    borderColor: '#F39C46',
     overflow: 'hidden',
     textAlign: 'center',
   },
@@ -401,5 +403,6 @@ const styles = StyleSheet.create({
     borderColor: '#999999',
     overflow: 'hidden',
     textAlign: 'center',
+    marginBottom: 5,
   },
 });

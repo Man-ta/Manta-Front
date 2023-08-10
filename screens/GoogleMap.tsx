@@ -30,6 +30,7 @@ export default function LocationExample() {
         let userLocation = await Location.getCurrentPositionAsync({});
         const { latitude, longitude } = userLocation.coords;
         dispatch(setLocation({ latitude, longitude }));
+        console.log(location);
 
         setLoading(false);  // 위치 정보를 받아왔으니 로딩 상태를 false로 변경
 
@@ -58,8 +59,8 @@ export default function LocationExample() {
               provider={PROVIDER_GOOGLE}
               region={
                 {
-                  latitude: location.latitude,
-                  longitude: location.longitude,
+                  latitude: 37.56648210,
+                  longitude: 126.98502043,
                   latitudeDelta: 0.006,
                   longitudeDelta: 0.006
                 }

@@ -2,6 +2,7 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 // state들의 타입 지정
 export type RootState = {
+  poiIdList: any[],
   placesList: any,
   searchedName: string,
   selectedDate: string,
@@ -11,9 +12,19 @@ export type RootState = {
   location: any,
 }
 
+const poiIdList = createSlice({
+  name: 'poiIdList',
+  initialState: [],
+  reducers: {
+    setPoiIdList(state, action) {
+      return action.payload;
+    }
+  }
+})
+
 const placesList = createSlice({
   name: 'placesList',
-  initialState: [],
+  initialState: [{}],
   reducers: {
     setPlacesList(state, action) {
       return action.payload;
@@ -88,6 +99,7 @@ const location = createSlice({
 
 export default configureStore({
   reducer: {
+    poiIdList: poiIdList.reducer,
     placesList: placesList.reducer,
     searchedName: searchedName.reducer,
     selectedDate: selectedDate.reducer,
@@ -98,6 +110,7 @@ export default configureStore({
   }
 })
 
+export const { setPoiIdList } = poiIdList.actions;
 export const { setPlacesList } = placesList.actions;
 export const { setSearchedName } = searchedName.actions;
 export const { setSelectedDate } = selectedDate.actions;
