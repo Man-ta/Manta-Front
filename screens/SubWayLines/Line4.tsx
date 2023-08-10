@@ -67,8 +67,6 @@ const Line4 = () => {
     {name: '오이도'},
  ]   
 
-
-
   return (
     <>
       <ScrollView>
@@ -84,7 +82,7 @@ const Line4 = () => {
         <Image source={require('../../assets/images/line4.png')} style={styles.line} />
         <Image source={require('../../assets/images/line4down.png')} style={styles.linedown} />
     
-        <Pressable key={index} onPress={() => console.log("I'm Pressed")}  overflow="hidden" h = "12"   w={"80%"} shadow="3" bg="white" p="0">
+        <Pressable key={index} onPress={() => console.log(station.name)}  overflow="hidden" h = "12"   w={"80%"} shadow="3" bg="white" p="0">
         <Box alignItems={"center"}>
           <Text color="coolGray.600" fontWeight="medium" fontSize="lg" textAlign="right" ml={15} mt={"2"}>
             {station.name}

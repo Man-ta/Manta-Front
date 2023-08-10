@@ -14,6 +14,7 @@ import { PoiSearch } from './screens/PoiSearch';
 import { Lost } from './screens/Lost';
 import { TransitRoute } from './screens/TransitRoute';
 import { NativeBaseProvider } from 'native-base';
+import { Line4 } from './screens/SubWayLines/Line4'
 
 
 const Stack = createNativeStackNavigator();
@@ -35,6 +36,7 @@ export default function App() {
           <Stack.Screen name="PoiSearch" component={PoiSearch} />
           <Stack.Screen name="Lost" component={Lost} />
           <Stack.Screen name="TransitRoute" component={TransitRoute} />
+          <Stack.Screen name="Line4" component={Line4} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

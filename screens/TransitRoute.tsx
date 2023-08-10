@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
-const TransitRoute = () => {
+const TransitRoute = ({ navigation } : {navigation : any}) => {
 
   const [apiResponse, setApiResponse] = useState(null);
   const [congestionData, setCongestionData] = useState([]);
@@ -41,6 +41,26 @@ const TransitRoute = () => {
   }, []);
 
 
+  const lines = [
+    { color: "#0052A4", name: "1호선", description: "소요산 - 인천/신창", backgroundColor: "#D1E8FF" },
+    { color: "#00A84D", name: "2호선", description: "시청-시청", backgroundColor: "#C2F0C7" },
+    { color: "#EF7C1C", name: "3호선", description: "대화-오금", backgroundColor: "#FFB77B" },
+    { color: "#00A5DE", name: "4호선", description: "진접-오이도", backgroundColor: "#B1EBFF" },
+    { color: "#8936E0", name: "5호선", description: "방화-마천/하남검단산", backgroundColor: "#E0CCF4" },
+    { color: "#CD7C2F", name: "6호선", description: "응암-신내", backgroundColor: "#E3B78C" },
+    { color: "#747F00", name: "7호선", description: "장암-석내", backgroundColor: "#B2B77E" },
+    { color: "#E6186C", name: "8호선", description: "암사-모란", backgroundColor: "#FFCDE1" },
+    { color: "#BDB092", name: "9호선", description: "중앙보훈병원-개화", backgroundColor: "#DDD1B6" },
+    { color: "#77C4A3", name: "경의•중앙선", description: "문산-지평", backgroundColor: "#B6ECD5" },
+    { color: "#0090d2", name: "공항철도", description: "서울역-인천공항2터미널", backgroundColor: "#92DDFF" },
+    { color: "#178c72", name: "경춘선", description: "청량리-춘천", backgroundColor: "#8BCABC" },
+  ];
+  
+  const linesDetail =  () => {
+    
+  }
+
+
   return (
     <>
       <ScrollView>
@@ -61,157 +81,157 @@ const TransitRoute = () => {
           </Stack>
       <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden"  w="170" shadow="3" bg="white" p = "0">
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
         
-          <Text color="#0052A4" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
-            1호선
+          <Text color={lines[0].color} fontWeight="medium" fontSize="2xl" ml={2} mt={2} bold>
+            {lines[0].name}
           </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2} >
-            소요산 - 인천/신창
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+            {lines[0].description}
           </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#D1E8FF"> </Box>
+      <Box mt ="4" h = "3"  backgroundColor={lines[0].backgroundColor}> </Box>
     </Pressable>
     </Box>
     <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" w="170" shadow="3" bg="white" p = "0">
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
         
-          <Text color="#00A84D" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
-            2호선
+          <Text color={lines[1].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
+          {lines[1].name}
           </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2} >
-            시청-시청
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+          {lines[1].description}
           </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#C2F0C7"> </Box>
+      <Box mt ="4" h = "3"  backgroundColor={lines[1].backgroundColor}> </Box>
     </Pressable>
     </Box>
     </HStack>
     <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" w="170" shadow="3" bg="white" p = "0">
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
         
-          <Text color="#EF7C1C" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
-            3호선
+          <Text color={lines[2].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
+            {lines[2].name}
           </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2}>
-            대화-오금
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+            {lines[2].description}
           </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#FFB77B"> </Box>
+      <Box mt ="4" h = "3"  backgroundColor={lines[2].backgroundColor}> </Box>
     </Pressable>
     </Box>
     <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden"  w="170" shadow="3" bg="white" p = "0">
+      <Pressable onPress={() => navigation.navigate('Line4')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
-          <Text color="#00A5DE" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
-            4호선
+          <Text color={lines[3].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
+          {lines[3].name}
           </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2}>
-            진접-오이도
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+          {lines[3].description}
           </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#B1EBFF"> </Box>
-    </Pressable>
-    </Box>
-    </HStack>
-    <HStack space={3} justifyContent="center">
-    <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden"  w="170" shadow="3" bg="white" p = "0">
-        
-          <Text color="#8936E0" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
-            5호선
-          </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2}>
-            방화-마천/하남검단산
-          </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#E0CCF4"> </Box>
-    </Pressable>
-    </Box>
-      <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" w="170" shadow="3" bg="white" p = "0">
-        
-          <Text color="#CD7C2F" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
-            6호선
-          </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2}>
-            응암-신내
-          </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#E3B78C"> </Box>
+      <Box mt ="4" h = "3"  backgroundColor={lines[3].backgroundColor}> </Box>
     </Pressable>
     </Box>
     </HStack>
     <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" w="170" shadow="3" bg="white" p = "0">
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
         
-          <Text color="#747F00" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
-            7호선
+          <Text color={lines[4].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
+            {lines[4].name}
           </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2}>
-            장암-석내
+          <Text fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+            {lines[4].description}
           </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#B2B77E"> </Box>
+      <Box mt ="4" h = "3"  backgroundColor={lines[4].backgroundColor}> </Box>
     </Pressable>
     </Box>
     <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden"  w="170" shadow="3" bg="white" p = "0">
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
         
-          <Text color="#E6186C" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
-            8호선
+          <Text color={lines[5].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
+          {lines[5].name}
           </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2}>
-            암사-모란
+          <Text fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+          {lines[5].description}
           </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#FFCDE1"> </Box>
+      <Box mt ="4" h = "3"  backgroundColor={lines[5].backgroundColor}> </Box>
     </Pressable>
     </Box>
     </HStack>
     <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" w="170" shadow="3" bg="white" p = "0">
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
         
-          <Text color="#BDB092" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
-            9호선
+          <Text color={lines[6].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
+            {lines[6].name}
           </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2}>
-            중앙보훈병원-개화
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+            {lines[6].description}
           </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#DDD1B6"> </Box>
+      <Box mt ="4" h = "3"  backgroundColor={lines[6].backgroundColor}> </Box>
     </Pressable>
     </Box>
     <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden"  w="170" shadow="3" bg="white" p = "0">
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
         
-          <Text color="#77C4A3" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
-            경의•중앙선
+          <Text color={lines[7].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
+          {lines[7].name}
           </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2}>
-            문산-지평
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1} >
+          {lines[7].description}
           </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#B6ECD5"> </Box>
+      <Box mt ="4" h = "3"  backgroundColor={lines[7].backgroundColor}> </Box>
     </Pressable>
     </Box>
     </HStack>
     <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden" w="170" shadow="3" bg="white" p = "0">
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
         
-          <Text color="#0090d2" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
-            공항철도
+          <Text color={lines[8].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
+            {lines[8].name}
           </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2}>
-            서울역-인천공항2터미널
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1} >
+            {lines[8].description}
           </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#92DDFF"> </Box>
+      <Box mt ="4" h = "3"  backgroundColor={lines[8].backgroundColor}> </Box>
     </Pressable>
     </Box>
     <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} rounded="8" overflow="hidden"  w="170" shadow="3" bg="white" p = "0">
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
         
-          <Text color="#178c72" mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
-            경춘선
+          <Text color={lines[9].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
+          {lines[9].name}
           </Text>
-          <Text mt="1" fontSize="sm" color="coolGray.700"  ml={2}>
-            청량리-춘천
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+          {lines[9].description}
           </Text>
-      <Box mt ="4" h = "3"  backgroundColor="#8BCABC"> </Box>
+      <Box mt ="4" h = "3"  backgroundColor={lines[9].backgroundColor}> </Box>
+    </Pressable>
+    </Box>
+    </HStack>
+    <HStack space={3} justifyContent="center">
+      <Box >
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+        
+          <Text color={lines[10].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
+            {lines[10].name}
+          </Text>
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+            {lines[10].description}
+          </Text>
+      <Box mt ="4" h = "3"  backgroundColor={lines[10].backgroundColor}> </Box>
+    </Pressable>
+    </Box>
+    <Box>
+      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+        
+          <Text color={lines[11].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
+          {lines[11].name}
+          </Text>
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+          {lines[11].description}
+          </Text>
+      <Box mt ="4" h = "3"  backgroundColor={lines[11].backgroundColor}> </Box>
     </Pressable>
     </Box>
     </HStack>
