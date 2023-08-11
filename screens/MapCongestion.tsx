@@ -16,9 +16,14 @@ const MapCongestion = () => {
 
   // console.log("poiIDList : ", poiIdList)
 
-  const handleApiCall = (poiId: string) => {
+  // const handleApiCall = (value: any) => {
+  //   const CongestionResponseDto = {
+  //     poiId: value,
+  //   };
+
+  const handleApiCall = (value: any) => {
     const CongestionResponseDto = {
-      poiId: poiId,
+      poiId: value,
     };
 
     const apiUrl = 'http://192.168.10.80:8085/place/congestion';
@@ -33,7 +38,7 @@ const MapCongestion = () => {
       },
     })
       .then(response => {
-        setApiResponse(JSON.stringify(response.data));
+        setApiResponse(response.data);
       })
       .catch(error => {
         console.error('API 호출 에러:', error);
@@ -41,12 +46,12 @@ const MapCongestion = () => {
   };
 
   useEffect(() => {
+    // handleApiCall(poiIdList[0].poiId);
     handleApiCall("497342");
   }, []);
 
-  console.log(apiResponse);
+  // console.log(apiResponse.contents);
 
-  // console.log(poiIdList[0].poiId)
 
   // ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -96,14 +101,14 @@ const MapCongestion = () => {
           <Image source={require('../assets/images/question-icon.png')} style={styles.questionIcon} />
         </Pressable>
 
-        {/* 장송 대한 정보가 있는 툴팁 */}
-        <View style={styles.balloonContainer}>
+        {/* 장소에 대한 정보가 있는 툴팁 */}
+        {/* <View style={styles.balloonContainer}>
           <View style={styles.balloon}>
             <Text style={styles.ballon_levelThree}>혼잡</Text>
             <Text style={styles.ballonText}>롯데백화점 인천점</Text>
           </View>
           <View style={styles.arrow} />
-        </View>
+        </View> */}
 
         {/* 혼잡 레벨에 대해 상세 설명이 있는 모달 */}
         <Modal animationType="none" transparent={true} visible={explainVisible} onRequestClose={() => setExplainVisible(false)}>

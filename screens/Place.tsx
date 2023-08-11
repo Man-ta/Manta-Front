@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setPlacesList, setPoiIdList } from "../store";
+import { RootState, setPlacesList, setPoiIdList, setProvidedList } from "../store";
 
 // 제공가능장소를 보여주는 컴포넌트
 const Place = () => {
@@ -12,6 +12,7 @@ const Place = () => {
   const [apiResponse, setApiResponse] = useState('');
   const placesList = useSelector((state: RootState) => state.placesList);
   const poiIdList = useSelector((state: RootState) => state.poiIdList);
+  const providedList = useSelector((state: RootState) => state.providedList);
   const [count, setCount] = useState();
 
   const handleApiCall = () => {
@@ -27,8 +28,7 @@ const Place = () => {
     })
     .then(response => {
       setApiResponse(JSON.stringify(response.data.contents)); 
-      dispatch(setPlacesList(response.data.contents)); 
-      console.log(response.data.status)
+      dispatch(setProvidedList(response.data.contents)); 
     })
     .catch(error => {
       console.error('API 호출 에러:', error);
@@ -36,17 +36,16 @@ const Place = () => {
   };
 
   useEffect(() => {
-    handleApiCall();
+    const poiIdArray = placesList.map((item: { poiId: string; }) => ({ poiId: item.poiId }));
+    dispatch(setProvidedList(poiIdArray));
   }, []);
 
   useEffect(() => {
-    const poiIdArray = placesList.map((item: { poiId: string; }) => ({ poiId: item.poiId }));
-    dispatch(setPoiIdList(poiIdArray));
+    handleApiCall();
   }, []);
 
   // console.log(poiIdList)
-
-  // console.log(poiIdList[0].poiId);
+  console.log(providedList);
 
   return (
     <>
