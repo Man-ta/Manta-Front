@@ -18,7 +18,7 @@ const HourlyPlace = () => {
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/hourly';
-    const appKey = 'hHVgIVpUL46cwtTAMs0Ie30gI50bs7LM4Zsiju7t';
+    const appKey = 'FKk8erAcVB1Cnz7V5iH5zaddyWkGmrRv2tg9mfGJ';
     // const apiUrl = 'http://192.168.45.29:8085/place/hourly';
     // const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
 
@@ -27,7 +27,7 @@ const HourlyPlace = () => {
     axios.get(apiUrl, {
       params: HourlyPlaceReponseDto,
       headers: {
-        appkey: 'hHVgIVpUL46cwtTAMs0Ie30gI50bs7LM4Zsiju7t',
+        appkey: appKey,
         'accept' : 'application/json',
         'Content-Type': 'application/json',
 

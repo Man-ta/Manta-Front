@@ -3,7 +3,7 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 // state들의 타입 지정
 export type RootState = {
   poiList: [],
-  poiIdList: any,
+  poiIDList: any,
   placesList: any,
   providedList: any,
   searchedName: string,
@@ -26,7 +26,7 @@ const providedList = createSlice({
 
 const poiList = createSlice({
   name: 'poiList',
-  initialState: ['아아'],
+  initialState: [],
   reducers: {
     setPoiList(state, action) {
       return action.payload;
@@ -34,11 +34,11 @@ const poiList = createSlice({
   }
 })
 
-const poiIdList = createSlice({
-  name: 'poiIdList',
+const poiIDList = createSlice({
+  name: 'poiIDList',
   initialState: [],
   reducers: {
-    setPoiIdList(state, action) {
+    setPoiIDList(state, action) {
       return action.payload;
     }
   }
@@ -56,7 +56,7 @@ const placesList = createSlice({
 
 const searchedName = createSlice({
   name: 'searchedName',
-  initialState: '',
+  initialState: '스타벅스',
   reducers: {
     setSearchedName(state, action) {
       return action.payload;
@@ -122,7 +122,7 @@ const location = createSlice({
 export default configureStore({
   reducer: {
     poiList: poiList.reducer,
-    poiIdList: poiIdList.reducer,
+    poiIDList: poiIDList.reducer,
     placesList: placesList.reducer,
     providedList: providedList.reducer,
     searchedName: searchedName.reducer,
@@ -135,7 +135,7 @@ export default configureStore({
 })
 
 export const { setPoiList } = poiList.actions;
-export const { setPoiIdList } = poiIdList.actions;
+export const { setPoiIDList } = poiIDList.actions;
 export const { setPlacesList } = placesList.actions;
 export const { setProvidedList } = providedList.actions;
 export const { setSearchedName } = searchedName.actions;

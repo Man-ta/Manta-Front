@@ -36,44 +36,43 @@ const PoiSearch = () => {
       searchType: 'all',
       areaLLCode:'11',
       searchtypCd: 'A',  
-      centerLat: '37.56648210',
-      centerLon: '126.98502043',
+      centerLat: '37.56648210',  // 중심 위도
+      centerLon: '126.98502043',  // 중심 경도
       reqCoordType: 'WGS84GEO',
       resCoordType: 'WGS84GEO',
       radius : '1',
       page: '1',
       count: '20',
-      multiPoint: 'Y',
+      multiPoint: 'Y', 
       poiGroupYn: 'N',
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/search';
-    const appKey = 'GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES';
+    const appKey = 'FKk8erAcVB1Cnz7V5iH5zaddyWkGmrRv2tg9mfGJ';
 
     // API 호출
     axios.get(apiUrl, {
       params: PoiSearchDto,
       headers: {
-        appkey: 'GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES',
+        appkey: appKey,
         'accept' : 'application/json',
         'Content-Type': 'application/json',
       },
     })
     .then(response => {
-      const pois = response.data.searchPoiInfo.pois.poi; // pois 배열 추출
+      const pois = response.data.searchPoiInfo.pois.poi; // 호출한 api로부터 필요한 정보만 추출
       const extractedData = pois.map((poi: Poi) => ({
-        id: poi.id,
-        name: poi.name,
-        centerLat: poi.newAddressList.newAddress[0].centerLat,
-        centerLon: poi.newAddressList.newAddress[0].centerLon,
+        id: poi.id,  // 장소 id
+        name: poi.name,  // 장소 이름
+        centerLat: poi.newAddressList.newAddress[0].centerLat,  // 위도
+        centerLon: poi.newAddressList.newAddress[0].centerLon,  // 경도
       }));
 
-      console.log(pois.newAddressList)
       dispatch(setPoiList(extractedData)); // 추출한 데이터를 상태에 저장
     })
     .catch(error => {
-      console.error('PoiSearch API 호출 에러:', error);
+      console.error('Ph API 호출 에러:', error);
     });
     console.log("장소 이름 : ", searchedName);
   };
