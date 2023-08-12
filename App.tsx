@@ -15,6 +15,18 @@ import { Lost } from './screens/Lost';
 import { TransitRoute } from './screens/TransitRoute';
 import { NativeBaseProvider } from 'native-base';
 import { Line4 } from './screens/SubWayLines/Line4'
+import { Line3 } from './screens/SubWayLines/Line3';
+import { Line1 } from './screens/SubWayLines/Line1';
+import { Line6 } from './screens/SubWayLines/Line6';
+import { Line7 } from './screens/SubWayLines/Line7';
+import { Line8 } from './screens/SubWayLines/Line8';
+import { Line_Arex } from './screens/SubWayLines/Line AREX';
+import { Line_Gyeongchun } from './screens/SubWayLines/Line Gyeongchun ';
+import Example from './screens/modal/LineModal';
+import { Line2 } from './screens/SubWayLines/Line2';
+import { Line5 } from './screens/SubWayLines/Line5';
+import { Line9 } from './screens/SubWayLines/Line9';
+import { Line_GyeonguiJungang } from './screens/SubWayLines/Line GyeonguiJungang';
 
 
 const Stack = createNativeStackNavigator();
@@ -36,7 +48,20 @@ export default function App() {
           <Stack.Screen name="PoiSearch" component={PoiSearch} />
           <Stack.Screen name="Lost" component={Lost} />
           <Stack.Screen name="TransitRoute" component={TransitRoute} />
+          <Stack.Screen name="Line1" component={Line1} />
+          <Stack.Screen name="Line2" component={Line2} />
+          <Stack.Screen name="Line3" component={Line3} />
           <Stack.Screen name="Line4" component={Line4} />
+          <Stack.Screen name="Line5" component={Line5} />
+          <Stack.Screen name="Line6" component={Line6} />
+          <Stack.Screen name="Line7" component={Line7} />
+          <Stack.Screen name="Line8" component={Line8} />
+          <Stack.Screen name="Line9" component={Line9} />
+          <Stack.Screen name="Line_Arex" component={Line_Arex} />
+          <Stack.Screen name="Line_Gyeongchun" component={Line_Gyeongchun} />
+          <Stack.Screen name="Line_GyeonguiJungang" component={Line_GyeonguiJungang} />
+
+          
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

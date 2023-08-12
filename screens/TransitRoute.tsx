@@ -81,7 +81,7 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
           </Stack>
       <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      <Pressable onPress={() => navigation.navigate('Line1')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[0].color} fontWeight="medium" fontSize="2xl" ml={2} mt={2} bold>
             {lines[0].name}
@@ -93,7 +93,7 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     </Pressable>
     </Box>
     <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      <Pressable onPress={() => navigation.navigate('Line2')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[1].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
           {lines[1].name}
@@ -107,7 +107,7 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     </HStack>
     <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      <Pressable onPress={() => navigation.navigate('Line3')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[2].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
             {lines[2].name}
@@ -133,7 +133,7 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     </HStack>
     <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      <Pressable onPress={() => navigation.navigate('Line5')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[4].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
             {lines[4].name}
@@ -145,7 +145,7 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     </Pressable>
     </Box>
     <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      <Pressable onPress={() => navigation.navigate('Line6')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[5].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
           {lines[5].name}
@@ -159,7 +159,7 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     </HStack>
     <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      <Pressable onPress={() => navigation.navigate('Line7')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[6].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
             {lines[6].name}
@@ -171,7 +171,7 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     </Pressable>
     </Box>
     <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      <Pressable onPress={() => navigation.navigate('Line8')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[7].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
           {lines[7].name}
@@ -185,7 +185,7 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     </HStack>
     <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      <Pressable onPress={() => navigation.navigate('Line9')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[8].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
             {lines[8].name}
@@ -197,7 +197,8 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     </Pressable>
     </Box>
     <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      {/* Line_GyeonguiJungang */}
+      <Pressable onPress={() => navigation.navigate('Line_GyeonguiJungang')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[9].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
           {lines[9].name}
@@ -211,7 +212,7 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     </HStack>
     <HStack space={3} justifyContent="center">
       <Box >
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      <Pressable onPress={() => navigation.navigate('Line_Arex')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[10].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2} bold>
             {lines[10].name}
@@ -223,7 +224,7 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     </Pressable>
     </Box>
     <Box>
-      <Pressable onPress={() => console.log("I'm Pressed")} w="170" rounded="8" bg="white" p="0" shadow="1">
+      <Pressable onPress={() => navigation.navigate('Line_Gyeongchun')} w="170" rounded="8" bg="white" p="0" shadow="1">
         
           <Text color={lines[11].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
           {lines[11].name}
