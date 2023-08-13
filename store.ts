@@ -2,6 +2,9 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 // state들의 타입 지정
 export type RootState = {
+  modalVisible: boolean,
+  selectedName: string,
+  selectedID: string,
   poiList: [],
   poiIDList: any,
   placesList: any,
@@ -13,6 +16,36 @@ export type RootState = {
   selectedTime: any,
   location: any,
 }
+
+const modalVisible = createSlice({
+  name: 'modalVisible',
+  initialState: false,
+  reducers: {
+    setModalVisible(state, action) {
+      return action.payload;
+    }
+  }
+})
+
+const selectedName = createSlice({
+  name: 'selectedName',
+  initialState: '',
+  reducers: {
+    setSelectedName(state, action) {
+      return action.payload;
+    }
+  }
+})
+
+const selectedID = createSlice({
+  name: 'selectedID',
+  initialState: '',
+  reducers: {
+    setSelectedID(state, action) {
+      return action.payload;
+    }
+  }
+})
 
 const providedList = createSlice({
   name: 'providedList',
@@ -121,6 +154,9 @@ const location = createSlice({
 
 export default configureStore({
   reducer: {
+    modalVisible: modalVisible.reducer,
+    selectedName: selectedName.reducer,
+    selectedID: selectedID.reducer,
     poiList: poiList.reducer,
     poiIDList: poiIDList.reducer,
     placesList: placesList.reducer,
@@ -134,6 +170,9 @@ export default configureStore({
   }
 })
 
+export const { setModalVisible } = modalVisible.actions;
+export const { setSelectedName } = selectedName.actions;
+export const { setSelectedID } = selectedID.actions;
 export const { setPoiList } = poiList.actions;
 export const { setPoiIDList } = poiIDList.actions;
 export const { setPlacesList } = placesList.actions;

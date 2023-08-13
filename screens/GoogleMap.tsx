@@ -4,9 +4,10 @@ import { ActivityIndicator, StyleSheet, View, Text, ToastAndroid } from "react-n
 import { PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setPoiList } from "../store";
+import { RootState, setModalVisible, setPoiList, setSelectedID, setSelectedName } from "../store";
 import { setLocation } from "../store";
 import axios from "axios";
+import { MapModal } from "./modal/MapModal";
 
 export default function LocationExample() {
 
@@ -20,7 +21,13 @@ export default function LocationExample() {
   const [loading, setLoading] = useState(true);  // 위치 정보를 렌더링하는 동안 로딩을 표시하기 위한 state
   const poiList = useSelector((state: RootState) => state.poiList);  // 장소의 id, 이름, 좌표를 관리하는 state
   const searchedName = useSelector((state: RootState) => state.searchedName);  // 검색창에 입력된 값
+  // const [modalVisible, setModalVisible] = useState<boolean>(false);  // 필터링 모달의 on/off를 관리하는 state - 모달의 초기 상태를 false로 설정하여 보이지 않게 함
+  const modalVisible = useSelector((state: RootState) => state.modalVisible);
+  const selectedName = useSelector((state:RootState) => state.selectedName);
+  const selectedID = useSelector((state:RootState) => state.selectedID);
 
+
+  console.log(poiList.length)
   type Poi = {
     id: string,
     name: string,
@@ -54,7 +61,7 @@ export default function LocationExample() {
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/search';
-    const appKey = 'GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES';
+    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
 
     // API 호출
     axios.get(apiUrl, {
@@ -66,7 +73,6 @@ export default function LocationExample() {
       },
     })
       .then(response => {
-        console.log("값 : ", response.data)
         const pois = response.data.searchPoiInfo.pois.poi; // 호출한 api로부터 필요한 정보만 추출
         const extractedData = pois.map((item: Poi) => ({
           id: item.id,  // 장소 id
@@ -109,11 +115,19 @@ export default function LocationExample() {
     // console.log(region.latitude + " + " + region.longitude);
   }
 
+  const sendID = (item: any) => {
+    console.log(item);
+    dispatch(setSelectedName(item.name));
+    dispatch(setSelectedID(item.id));
+    dispatch(setModalVisible(!modalVisible));
+  }
+
   // console.log(location);
   // console.log(temp);
 
   return (
     <View style={styles.container}>
+      
       {
         loading ? (
           <ActivityIndicator style={styles.activityIndicator} />
@@ -141,21 +155,29 @@ export default function LocationExample() {
                       longitude: parseFloat(item.centerLon), // 문자열을 숫자로 변환해야 합니다.
                     }}
                     // title={item.name}
+                    onPress={() => sendID(item)}
                   >
                     <View style={styles.balloonContainer}>
                       <View style={styles.balloon}>
                         <Text style={styles.ballon_levelThree}>혼잡</Text>
                         <Text style={styles.ballonText}>{item.name}</Text>
+                        
                       </View>
                       <View style={styles.arrow} />
                     </View>
+
                   </Marker>
                 ))}
+
+                {/* {
+                  modalVisible === false ? null : <MapModal />
+                } */}
 
             </MapView>
 
           )
       }
+
     </View>
   );
 }

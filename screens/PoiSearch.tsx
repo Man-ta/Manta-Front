@@ -49,7 +49,7 @@ const PoiSearch = () => {
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/search';
-    const appKey = 'FKk8erAcVB1Cnz7V5iH5zaddyWkGmrRv2tg9mfGJ';
+    const appKey = 'I8dfwu05KGagRBBcGNaQmaiUzA0ZecK67HhUB0dH';
 
     // API 호출
     axios.get(apiUrl, {

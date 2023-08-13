@@ -5,23 +5,28 @@ import { Calendar } from "react-native-calendars";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setSelectedDate, setSelectedDates, setSelectedDotw, setSelectedTime } from "../../store";
+import { RootState, setModalVisible, setSelectedDate, setSelectedDates, setSelectedDotw, setSelectedTime } from "../../store";
 
 // 지도에서 혼잡도에 대한 정보를 필터링해서 볼 수 있도록 하는 컴포넌트
 const MapModal = () => {
 
   const dispatch = useDispatch();
 
-  const [modalVisible, setModalVisible] = useState<boolean>(false);  // 필터링 모달의 on/off를 관리하는 state - 모달의 초기 상태를 false로 설정하여 보이지 않게 함
+  // const [modalVisible, setModalVisible] = useState<boolean>(false);  // 필터링 모달의 on/off를 관리하는 state - 모달의 초기 상태를 false로 설정하여 보이지 않게 함
   const [calendarVisible, setCalendarVisible] = useState<boolean>(false);  // 달력 모달의 on/off를 관리하는 state
   const [dotwVisible, setDotwVisible] = useState<boolean>(false);  // 요일 모달의 on/off를 관리하는 state
   const [timePickerVisible, setTimePickerVisible] = useState<boolean>(false);  // 시간을 선택하는 모달의 on/off를 관리하는 state
   const [whetherDay, setWhetherDay] = useState<boolean>(false);  // 모달에서 '여러 날짜' 혹은 '하루' 항목을 관리하는 state
 
+  const modalVisible = useSelector((state: RootState) => state.modalVisible);
+
   const selectedDates = useSelector((state: RootState) => state.selectedDates);  // '여러 날짜' 달력에서 선택된 값들을 관리하는 state
   const selectedDate = useSelector((state: RootState) => state.selectedDate);  // '하루' 달력에서 선택된 값을 관리하는 state
   const selectedDotw = useSelector((state: RootState) => state.selectedDotw);  // 요일 피커에서 선택된 요일을 관리하는 state
   const selectedTime = useSelector((state: RootState) => state.selectedTime);  // 타임 피커에서 선택된 시간을 관리하는 state
+
+  const selectedName = useSelector((state:RootState) => state.selectedName);
+
 
   const [changeModal, setChangeModal] = useState<boolean>(true);  // true, false에 따라 모달의 상태를 변경하는 state
 
@@ -30,6 +35,7 @@ const MapModal = () => {
     const dateString = day;
     dispatch(setSelectedDates([...selectedDates, dateString]));
 
+    /* dispatch 내부에는 직렬화 가능한 값만 넣기(함수X) */
     // dispatch(setSelectedDates((prevSelectedDates: string[]) => {
     //   // 이미 선택된 날짜라면 선택 해제
     //   if (prevSelectedDates.includes(dateString)) {
@@ -121,7 +127,7 @@ const MapModal = () => {
 
   // 필터링 모달의 on/off 기능 - 모달의 상태를 true로 바꿔 보이게 함
   const toggleModal = () => {
-    setModalVisible(!modalVisible);
+    dispatch(setModalVisible(!modalVisible));
   }
 
   // '초기화' 버튼을 누르면 선택된 값을 모두 리셋
@@ -166,12 +172,12 @@ const MapModal = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Pressable onPress={toggleModal}>
+    <View>
+      {/* <Pressable onPress={toggleModal}>
         <Text style={{ fontSize: 30, position: 'absolute', top: 100 }}>
           모달열기
         </Text>
-      </Pressable>
+      </Pressable> */}
       {/* <Button title="모달열기" onPress={toggleModal} /> */}
 
       {
@@ -179,7 +185,7 @@ const MapModal = () => {
 
           // '여러 날짜' 모달
           <>
-            <Modal animationType="fade" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+            <Modal animationType="fade" transparent={true} visible={modalVisible} onRequestClose={() => dispatch(setModalVisible(false))}>
               <View style={styles.backgroundTransparent}>
                 <View style={styles.modalConatiner}>
                   <View style={styles.modal}>
@@ -199,8 +205,14 @@ const MapModal = () => {
                       </View>
                     </View>
 
+
                     {/* 모달의 주요 내용이 있는 영역 */}
                     <View style={styles.contents}>
+                      <View style={styles.congestionView}>
+                        <Text style={styles.congestion}>
+                          현재 {selectedName}은 <Text style={styles.congestionDetail}>매우 혼잡</Text>해요!
+                        </Text>
+                      </View>
                       <View style={styles.dateView}>
                         <Text style={styles.date}>
                           날짜
@@ -225,6 +237,12 @@ const MapModal = () => {
                       <Pressable onPress={toggleTimePicker} style={styles.selectedHour}>
                         {selectedTime === '선택' ? <Text style={styles.placeholder}>{selectedTime}</Text> : <Text>{selectedTime}</Text>}
                       </Pressable>
+                      <Text style={styles.dotw}>
+                        평균 혼잡도
+                      </Text>
+                      <Text style={styles.selectedDotw}>
+                        25,019명
+                      </Text>
                     </View>
 
                     {/* 완료, 초기화 버튼이 있는 모달의 하단 영역 */}
@@ -431,7 +449,8 @@ const DateModal = () => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    zIndex: 1,
   },
   calendarContainer: {
     width: '95%',
@@ -597,6 +616,19 @@ const styles = StyleSheet.create({
   contents: {
     flexDirection: 'column',
     marginTop: 5,
+  },
+  congestionView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  congestion: {
+    fontSize: 17,
+    paddingTop: 5,
+  },
+  congestionDetail: {
+    fontWeight: 'bold',
+    color: 'red',
   },
   dateView: {
     marginTop: 10

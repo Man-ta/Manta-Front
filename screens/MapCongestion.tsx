@@ -19,6 +19,11 @@ const MapCongestion = () => {
   const [explainVisible, setExplainVisible] = useState<boolean>(false);  // 혼잡 레벨에 대해 상세 설명이 있는 모달에 관한 on/off를 관리하는 state
   const searchedName = useSelector((state: RootState) => state.searchedName);
 
+  const modalVisible = useSelector((state: RootState) => state.modalVisible);
+
+  const selectedID = useSelector((state:RootState) => state.selectedID);
+
+
   type Poi = {
     id: string,
     name: string,
@@ -28,12 +33,13 @@ const MapCongestion = () => {
   }
 
   const arr = ["497342", "5411247", "219821"];
+  const a = "497342"
 
   const extractedID = poiList.map((item: Poi, i: number) => ({
     id: item.id
   }));
 
-  console.log(poiList)
+  // console.log(poiList)
 
   // dispatch(setPoiIDList(extractedID));
 
@@ -43,7 +49,7 @@ const MapCongestion = () => {
     };
 
     const apiUrl = 'http://192.168.10.80:8085/place/congestion';
-    const appKey = 'GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES';
+    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
 
     axios.get(apiUrl, {
       params: CongestionResponseDto,
@@ -55,7 +61,6 @@ const MapCongestion = () => {
     })
       .then(response => {
         setApiResponse(JSON.stringify(response.data));
-        console.log(JSON.stringify(response.data))
       })
       .catch(error => {
         console.error('API 호출 에러:', error);
@@ -63,10 +68,9 @@ const MapCongestion = () => {
   };
 
   useEffect(() => {
-    extractedID.forEach((value: any) => {
-      handleApiCall(value);
-    })
-  }, []);
+    handleApiCall("2930148");
+    console.log(apiResponse);
+  }, [selectedID]);
 
   // searchedName의 state를 TextInput에 입력한 글자로 바꿈
   const textChange = (text: string) => {
@@ -93,9 +97,12 @@ const MapCongestion = () => {
   return (
     <>
       <View style={styles.container}>
+        
 
         <GoogleMap />
-        {/* <MapModal /> */}
+        {
+          modalVisible === false ? <MapModal /> : null
+        }
 
         {/* 상단 검색영역  */}
         <View style={styles.searchContainer}>
@@ -148,6 +155,8 @@ const MapCongestion = () => {
         <Pressable onPress={setCurrentLocation} style={styles.locationButton}>
           <Image source={require('../assets/images/location-icon.png')} style={styles.locationIcon} />
         </Pressable>
+
+        <MapModal />
 
         {/* 우측 하단 혼잡 레벨에 관한 모달 */}
         <View style={styles.infoView}>

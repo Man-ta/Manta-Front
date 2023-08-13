@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setPlacesList, setPoiIdList, setProvidedList } from "../store";
+import { RootState, setPlacesList, setPoiIDList, setProvidedList } from "../store";
 
 // 제공가능장소를 보여주는 컴포넌트
 const Place = () => {
@@ -11,17 +11,17 @@ const Place = () => {
 
   const [apiResponse, setApiResponse] = useState('');
   const placesList = useSelector((state: RootState) => state.placesList);
-  const poiIdList = useSelector((state: RootState) => state.poiIdList);
+  const poiIdList = useSelector((state: RootState) => state.poiIDList);
   const providedList = useSelector((state: RootState) => state.providedList);
   const [count, setCount] = useState();
 
   const handleApiCall = () => {
     const apiUrl = 'http://192.168.10.80:8085/place/data';
-    const appKey = 'GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES';
+    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
 
     axios.get(apiUrl, {
       headers: {
-        appkey: 'GIus98D87O1NAVDh5d0iB7BRUTtA7NX77DbSioES',
+        appkey: '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf',
         'accept': 'application/json',
         'Content-Type': 'application/json',
       },
@@ -45,7 +45,7 @@ const Place = () => {
   }, []);
 
   // console.log(poiIdList)
-  console.log(providedList);
+  // console.log(providedList.length);
 
   return (
     <>
