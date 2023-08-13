@@ -141,10 +141,10 @@ const stations3 =[
             borderBottomColor={"coolGray.100"}
           >
             <View style={styles.imageContainer}>
-              <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.linedown} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.linedown} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.line} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.linedown} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.line} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.linedown} />
             </View>
             <Pressable
               onPress={() => console.log(station.name)}
@@ -178,7 +178,7 @@ const stations3 =[
   borderBottomColor={"coolGray.100"}
   alignItems="center"
 >
-  <Text color={"coolGray.600"} bold fontSize={"xl"} ml={200} mt={0}>경일선(구일-인천)</Text>
+  <Text color={"coolGray.600"} bold fontSize={"lg"} ml={210} mt={0}>경일선(구일-인천)</Text>
   <Box width={"full"} backgroundColor={"white"} h="12"></Box>
 </HStack>
 {/* 경인선(구일-인천) */}
@@ -190,10 +190,10 @@ const stations3 =[
             borderBottomColor={"coolGray.100"}
           >
             <View style={styles.imageContainer}>
-              <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.linedown} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.linedown} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.line} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.linedown} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.line} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.linedown} />
             </View>
             <Pressable
               onPress={() => console.log(stations2.name)}
@@ -240,10 +240,10 @@ const stations3 =[
             borderBottomColor={"coolGray.100"}
           >
             <View style={styles.imageContainer}>
-              <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.linedown} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.linedown} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.line} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.linedown} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.line} />
+              <Image source={require('../../assets/images/line1.png')} style={styles.linedown} />
             </View>
             <Pressable
               onPress={() => console.log(stations3.name)}

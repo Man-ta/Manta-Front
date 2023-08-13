@@ -90,8 +90,8 @@ const stations3 =[
         {/* 본선 */}
         {stations.map((station, index) => (
        <HStack backgroundColor={"white"} borderBottomWidth={1} borderBottomColor={"coolGray.100"} >
-        <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-        <Image source={require('../../assets/images/line4down.png')} style={styles.linedown} />
+        <Image source={require('../../assets/images/line2.png')} style={styles.line} />
+        <Image source={require('../../assets/images/line2down.png')} style={styles.linedown} />
     
         <Pressable key={index} onPress={() => console.log(station.name)}  overflow="hidden" h = "12"   w={"80%"} shadow="3" bg="white" p="0">
         <Box alignItems={"center"}>
@@ -119,8 +119,8 @@ const stations3 =[
 {/* 성수지선 */}
         {stations2.map((stations2, index2) => (
        <HStack backgroundColor={"white"} borderBottomWidth={1} borderBottomColor={"coolGray.100"} >
-        <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-        <Image source={require('../../assets/images/line4down.png')} style={styles.linedown} />
+        <Image source={require('../../assets/images/line2.png')} style={styles.line} />
+        <Image source={require('../../assets/images/line2down.png')} style={styles.linedown} />
     
         <Pressable key={index2} onPress={() => console.log(stations2.name)}  overflow="hidden" h = "12"   w={"80%"} shadow="3" bg="white" p="0">
         <Box alignItems={"center"}>
@@ -148,8 +148,8 @@ const stations3 =[
 {/* 신정지선 */}
         {stations3.map((stations3, index3) => (
        <HStack backgroundColor={"white"} borderBottomWidth={1} borderBottomColor={"coolGray.100"} >
-        <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-        <Image source={require('../../assets/images/line4down.png')} style={styles.linedown} />
+        <Image source={require('../../assets/images/line2.png')} style={styles.line} />
+        <Image source={require('../../assets/images/line2down.png')} style={styles.linedown} />
     
         <Pressable key={index3} onPress={() => console.log(stations3.name)}  overflow="hidden" h = "12"   w={"80%"} shadow="3" bg="white" p="0">
         <Box alignItems={"center"}>

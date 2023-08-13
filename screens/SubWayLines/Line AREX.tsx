@@ -43,8 +43,8 @@ const Line_Arex = () => {
         </Box>
         {stations.map((station, index) => (
        <HStack backgroundColor={"white"} borderBottomWidth={1} borderBottomColor={"coolGray.100"} >
-        <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-        <Image source={require('../../assets/images/line4down.png')} style={styles.linedown} />
+        <Image source={require('../../assets/images/lineAREX.png')} style={styles.line} />
+        <Image source={require('../../assets/images/lineAREXdown.png')} style={styles.linedown} />
     
         <Pressable key={index} onPress={() => console.log(station.name)}  overflow="hidden" h = "12"   w={"80%"} shadow="3" bg="white" p="0">
         <Box alignItems={"center"}>

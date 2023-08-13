@@ -22,11 +22,14 @@ import { Line7 } from './screens/SubWayLines/Line7';
 import { Line8 } from './screens/SubWayLines/Line8';
 import { Line_Arex } from './screens/SubWayLines/Line AREX';
 import { Line_Gyeongchun } from './screens/SubWayLines/Line Gyeongchun ';
-import Example from './screens/modal/LineModal';
+
 import { Line2 } from './screens/SubWayLines/Line2';
 import { Line5 } from './screens/SubWayLines/Line5';
 import { Line9 } from './screens/SubWayLines/Line9';
 import { Line_GyeonguiJungang } from './screens/SubWayLines/Line GyeonguiJungang';
+import { Line_Sbd } from './screens/SubWayLines/Line Shinbundang';
+import { Line_Suin } from './screens/SubWayLines/Line Suin';
+import { Line_Ui } from './screens/SubWayLines/Line UiSinseol';
 
 
 const Stack = createNativeStackNavigator();
@@ -60,6 +63,9 @@ export default function App() {
           <Stack.Screen name="Line_Arex" component={Line_Arex} />
           <Stack.Screen name="Line_Gyeongchun" component={Line_Gyeongchun} />
           <Stack.Screen name="Line_GyeonguiJungang" component={Line_GyeonguiJungang} />
+          <Stack.Screen name="Line_Sbd" component={Line_Sbd} />
+          <Stack.Screen name="Line_Suin" component={Line_Suin} />
+          <Stack.Screen name="Line_Ui" component={Line_Ui} />
 
           
         </Stack.Navigator>

@@ -67,10 +67,10 @@ const Line9 = () => {
             borderBottomColor={"coolGray.100"}
           >
             <View style={styles.imageContainer}>
-              <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.linedown} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.line} />
-              <Image source={require('../../assets/images/line4.png')} style={styles.linedown} />
+              <Image source={require('../../assets/images/line9.png')} style={styles.line} />
+              <Image source={require('../../assets/images/line9.png')} style={styles.linedown} />
+              <Image source={require('../../assets/images/line9.png')} style={styles.line} />
+              <Image source={require('../../assets/images/line9.png')} style={styles.linedown} />
             </View>
             <Pressable
               onPress={() => console.log(station.name)}

@@ -54,6 +54,10 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
     { color: "#77C4A3", name: "경의•중앙선", description: "문산-지평", backgroundColor: "#B6ECD5" },
     { color: "#0090d2", name: "공항철도", description: "서울역-인천공항2터미널", backgroundColor: "#92DDFF" },
     { color: "#178c72", name: "경춘선", description: "청량리-춘천", backgroundColor: "#8BCABC" },
+    // 색상 바꿀 예정
+    { color: "#574623", name: "수인•분당선", description: "청량리-인천", backgroundColor: "#574623" },
+    { color: "#4A141E", name: "신분당선", description: "신사-광교", backgroundColor: "#4A141E" },
+    { color: "#2F5F33", name: "우이신설선", description: "북한산우이-신설동", backgroundColor: "#2F5F33" },
   ];
   
   const linesDetail =  () => {
@@ -235,6 +239,49 @@ const TransitRoute = ({ navigation } : {navigation : any}) => {
       <Box mt ="4" h = "3"  backgroundColor={lines[11].backgroundColor}> </Box>
     </Pressable>
     </Box>
+    </HStack>
+
+    <HStack space={3} justifyContent="center">
+      <Box >
+      <Pressable onPress={() => navigation.navigate('Line_Suin')} w="170" rounded="8" bg="white" p="0" shadow="1">
+        
+          <Text color={lines[12].color} fontWeight="medium" fontSize="2xl" ml={2} mt={2} bold>
+            {lines[12].name}
+          </Text>
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+            {lines[12].description}
+          </Text>
+      <Box mt ="4" h = "3"  backgroundColor={lines[12].backgroundColor}> </Box>
+    </Pressable>
+    </Box>
+    <Box>
+      <Pressable onPress={() => navigation.navigate('Line_Sbd')} w="170" rounded="8" bg="white" p="0" shadow="1">
+        
+          <Text color={lines[13].color} mt="1" fontWeight="medium" fontSize="2xl" ml={2} marginTop={2}  bold>
+          {lines[13].name}
+          </Text>
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+          {lines[13].description}
+          </Text>
+      <Box mt ="4" h = "3"  backgroundColor={lines[13].backgroundColor}> </Box>
+    </Pressable>
+    </Box>
+    </HStack>
+    <HStack space={3} justifyContent="center">
+      <Box >
+      <Pressable onPress={() => navigation.navigate('Line_Ui')} w="170" rounded="8" bg="white" p="0" shadow="1">
+        
+          <Text color={lines[14].color} fontWeight="medium" fontSize="2xl" ml={2} mt={2} bold>
+            {lines[14].name}
+          </Text>
+          <Text  fontSize="sm" color="coolGray.700" ml={2} mt={1}>
+            {lines[14].description}
+          </Text>
+      <Box mt ="4" h = "3"  backgroundColor={lines[14].backgroundColor}> </Box>
+      
+    </Pressable>
+    </Box>
+    
     </HStack>
     </VStack>
       </ScrollView>
