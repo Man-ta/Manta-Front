@@ -2,10 +2,11 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 // state들의 타입 지정
 export type RootState = {
+  rendering: boolean,
   modalVisible: boolean,
   selectedName: string,
   selectedID: string,
-  poiList: [],
+  poiList: any,
   poiIDList: any,
   placesList: any,
   providedList: any,
@@ -16,6 +17,16 @@ export type RootState = {
   selectedTime: any,
   location: any,
 }
+
+const rendering = createSlice({
+  name: 'rendering',
+  initialState: false,
+  reducers: {
+    setRendering(state, action) {
+      return action.payload;
+    }
+  }
+})
 
 const modalVisible = createSlice({
   name: 'modalVisible',
@@ -89,7 +100,7 @@ const placesList = createSlice({
 
 const searchedName = createSlice({
   name: 'searchedName',
-  initialState: '스타벅스',
+  initialState: '서울',
   reducers: {
     setSearchedName(state, action) {
       return action.payload;
@@ -154,6 +165,7 @@ const location = createSlice({
 
 export default configureStore({
   reducer: {
+    rendering: rendering.reducer,
     modalVisible: modalVisible.reducer,
     selectedName: selectedName.reducer,
     selectedID: selectedID.reducer,
@@ -170,6 +182,7 @@ export default configureStore({
   }
 })
 
+export const { setRendering } = rendering.actions;
 export const { setModalVisible } = modalVisible.actions;
 export const { setSelectedName } = selectedName.actions;
 export const { setSelectedID } = selectedID.actions;

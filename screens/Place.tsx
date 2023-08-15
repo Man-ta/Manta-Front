@@ -9,25 +9,21 @@ const Place = () => {
 
   const dispatch = useDispatch();
 
-  const [apiResponse, setApiResponse] = useState('');
   const placesList = useSelector((state: RootState) => state.placesList);
   const poiIdList = useSelector((state: RootState) => state.poiIDList);
-  const providedList = useSelector((state: RootState) => state.providedList);
-  const [count, setCount] = useState();
 
-  const handleApiCall = () => {
+  const providedListApiCall = () => {
     const apiUrl = 'http://192.168.10.80:8085/place/data';
-    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
+    const appKey = 'hHVgIVpUL46cwtTAMs0Ie30gI50bs7LM4Zsiju7t';
 
     axios.get(apiUrl, {
       headers: {
-        appkey: '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf',
+        appkey: appKey,
         'accept': 'application/json',
         'Content-Type': 'application/json',
       },
     })
     .then(response => {
-      setApiResponse(JSON.stringify(response.data.contents)); 
       dispatch(setProvidedList(response.data.contents)); 
     })
     .catch(error => {
@@ -41,11 +37,8 @@ const Place = () => {
   }, []);
 
   useEffect(() => {
-    handleApiCall();
+    providedListApiCall();
   }, []);
-
-  // console.log(poiIdList)
-  // console.log(providedList.length);
 
   return (
     <>

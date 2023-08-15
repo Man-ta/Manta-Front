@@ -205,7 +205,6 @@ const MapModal = () => {
                       </View>
                     </View>
 
-
                     {/* 모달의 주요 내용이 있는 영역 */}
                     <View style={styles.contents}>
                       <View style={styles.congestionView}>

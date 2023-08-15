@@ -4,8 +4,7 @@ import axios from 'axios';
 import { MapModal } from "./modal/MapModal";
 import GoogleMap from "./GoogleMap";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setLocation, setSearchedName, setPoiIDList, setPoiList } from "../store";
-import { PoiSearch } from "./PoiSearch";
+import { RootState, setLocation, setSearchedName, setPoiIDList, setPoiList, setRendering } from "../store";
 
 
 // 실시간 장소 혼잡도를 보여주는 컴포넌트
@@ -18,10 +17,9 @@ const MapCongestion = () => {
   const poiIDList = useSelector((state: RootState) => state.poiIDList);
   const [explainVisible, setExplainVisible] = useState<boolean>(false);  // 혼잡 레벨에 대해 상세 설명이 있는 모달에 관한 on/off를 관리하는 state
   const searchedName = useSelector((state: RootState) => state.searchedName);
-
   const modalVisible = useSelector((state: RootState) => state.modalVisible);
-
   const selectedID = useSelector((state:RootState) => state.selectedID);
+  const rendering = useSelector((state: RootState) => state.rendering);
 
 
   type Poi = {
@@ -32,45 +30,7 @@ const MapCongestion = () => {
     newAddressList: any
   }
 
-  const arr = ["497342", "5411247", "219821"];
-  const a = "497342"
-
-  const extractedID = poiList.map((item: Poi, i: number) => ({
-    id: item.id
-  }));
-
-  // console.log(poiList)
-
-  // dispatch(setPoiIDList(extractedID));
-
-  const handleApiCall = (value: any) => {
-    const CongestionResponseDto = {
-      poiId: value,
-    };
-
-    const apiUrl = 'http://192.168.10.80:8085/place/congestion';
-    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
-
-    axios.get(apiUrl, {
-      params: CongestionResponseDto,
-      headers: {
-        appkey: appKey,
-        'accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => {
-        setApiResponse(JSON.stringify(response.data));
-      })
-      .catch(error => {
-        console.error('API 호출 에러:', error);
-      });
-  };
-
-  useEffect(() => {
-    handleApiCall("2930148");
-    console.log(apiResponse);
-  }, [selectedID]);
+  console.log("poiList : ", poiList)
 
   // searchedName의 state를 TextInput에 입력한 글자로 바꿈
   const textChange = (text: string) => {
@@ -79,9 +39,8 @@ const MapCongestion = () => {
 
   // TextInput에 값을 입력하고 엔터키를 누르면 작동
   const handleEnterPress = () => {
-    if (searchedName) {
-      handleApiCall(searchedName);
-    }
+    dispatch(setRendering(!rendering));
+    console.log(rendering);
   }
 
   const toggleExplainModal = () => {
@@ -93,11 +52,12 @@ const MapCongestion = () => {
     // dispatch(setLocation(location));
     // console.log("클릭")
   }
+  // dispatch(setPoiList(extractedData));
+
 
   return (
     <>
-      <View style={styles.container}>
-        
+      <View style={styles.container}>        
 
         <GoogleMap />
         {

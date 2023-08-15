@@ -1,10 +1,11 @@
+// GoogleMap.tsx
 import React, { useEffect, useState } from "react";
 import MapView, { Callout, Marker } from "react-native-maps";
 import { ActivityIndicator, StyleSheet, View, Text, ToastAndroid } from "react-native";
 import { PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setModalVisible, setPoiList, setSelectedID, setSelectedName } from "../store";
+import { RootState, setModalVisible, setPoiList, setSelectedID, setSelectedName, setProvidedList } from "../store";
 import { setLocation } from "../store";
 import axios from "axios";
 import { MapModal } from "./modal/MapModal";
@@ -25,43 +26,74 @@ export default function LocationExample() {
   const modalVisible = useSelector((state: RootState) => state.modalVisible);
   const selectedName = useSelector((state:RootState) => state.selectedName);
   const selectedID = useSelector((state:RootState) => state.selectedID);
+  const providedList = useSelector((state: RootState) => state.providedList);
+
+  const rendering = useSelector((state: RootState) => state.rendering);
 
 
-  console.log(poiList.length)
+  const areaLLCode = ['11', '41', '28'];  // 11 = 서울, 41 = 경기, 28 = 인천
+
+  // console.log("장소 이름 : ", searchedName);
+
   type Poi = {
     id: string,
     name: string,
     centerLat: string,
     centerLon: string,
-    newAddressList: any
+    newAddressList: any,
+    congestionLevel: number
   }
 
   const encodeKorean = (text: string) => {
     return encodeURIComponent(text);
   };
 
-  const handleApiCall = () => {
+  // 제공 가능한 장소에 대한 정보를 호출
+  const providedListApiCall = () => {
+    const apiUrl = 'http://192.168.10.80:8085/place/data';
+    const appKey = 'hstbDwPIAk3NMHnBXTLWC9Huwiiyf2J17wOTXilf';
+
+    axios.get(apiUrl, {
+      headers: {
+        appkey: appKey,
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        dispatch(setProvidedList(response.data.contents));
+        console.log("제공가능장소")
+      })
+      .catch(error => {
+        console.error('API 호출 에러:', error);
+      });
+  };
+
+  // 좌표에 대한 정보를 호출
+  const coordinateApiCall = (value: any) => {
     // API 호출을 위한 파라미터 설정 (PoiSearchDto 객체와 유사한 형식으로 설정)
     const PoiSearchDto = {
       version: '1',
       searchKeyword: encodeKorean(searchedName),  // TextInput에서 입력한 값을 파라미터로 이용
       searchType: 'all',
-      areaLLCode: '11',
+      areaLLCode: value,
       searchtypCd: 'A',
-      centerLat: '37.56648210',  // 중심 위도
-      centerLon: '126.98502043',  // 중심 경도
+      // centerLat: '37.56648210',  // 중심 위도
+      // centerLon: '126.98502043',  // 중심 경도
+      centerLat: '37.5704',  // JW 메리어트 중심 위도
+      centerLon: '127.0089',  // JW 메리어트 중심 경도
       reqCoordType: 'WGS84GEO',
       resCoordType: 'WGS84GEO',
-      radius: '1',
+      radius: '0',
       page: '1',
-      count: '10',
+      count: '100',
       multiPoint: 'Y',
       poiGroupYn: 'N',
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/search';
-    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
+    const appKey = 'hstbDwPIAk3NMHnBXTLWC9Huwiiyf2J17wOTXilf';
 
     // API 호출
     axios.get(apiUrl, {
@@ -74,25 +106,72 @@ export default function LocationExample() {
     })
       .then(response => {
         const pois = response.data.searchPoiInfo.pois.poi; // 호출한 api로부터 필요한 정보만 추출
-        const extractedData = pois.map((item: Poi) => ({
+        let extractedData = pois.map((item: Poi) => ({
           id: item.id,  // 장소 id
           name: item.name,  // 장소 이름
           centerLat: item.newAddressList.newAddress[0].centerLat,  // 위도
           centerLon: item.newAddressList.newAddress[0].centerLon,  // 경도
         }));
 
+        // api 데이터를 제공 가능한 장소인지 필터링하여 제공 가능한 장소만으로 새로운 배열 생성
+        extractedData = extractedData.filter((itemPoi: { id: string; }) => {
+          return providedList.some((itemProvided: { poiId: string; }) => itemProvided.poiId === itemPoi.id);
+        });
+
         dispatch(setPoiList(extractedData)); // 추출한 데이터를 상태에 저장
+        console.log("좌표 호출")
       })
       .catch(error => {
         console.error('PoiSearch API 호출 에러:', error);
       });
-    console.log("장소 이름 : ", searchedName);
+  };
+
+  // 실시간 혼잡도에 대한 정보를 호출
+  const realTimeCongestionApiCall = async () => {
+
+    // Promise.all을 이용하여 비동기 작업이 모두 끝날 때까지 기다림
+    const updatedPoiList = await Promise.all(poiList.map(async (item: Poi) => {
+      try {
+        const CongestionResponseDto = {
+          poiId: item.id,
+        };
+
+        const apiUrl = 'http://192.168.10.80:8085/place/congestion';
+        const appKey = 'hstbDwPIAk3NMHnBXTLWC9Huwiiyf2J17wOTXilf';
+
+        const response = await axios.get(apiUrl, {
+          params: CongestionResponseDto,
+          headers: {
+            appkey: appKey,
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const congestionLevel = response.data.contents.rltm[0].congestionLevel;
+
+        console.log("실시간 혼잡도")
+        console.log("------------------------------------------------------")
+        return {
+          ...item,
+          congestionLevel: congestionLevel,
+        };
+
+      } catch (error) {
+        console.error('MapCongestion API 호출 에러:', error);
+        return item;
+      }
+    }));
+
+    // 비동기 작업이 끝난 후 값을 업데이트
+    dispatch(setPoiList(updatedPoiList));
   };
 
   useEffect(() => {
-
-    handleApiCall();  
-
+    providedListApiCall();
+    areaLLCode.forEach((item: string) => {
+      coordinateApiCall(item);
+    });
     (
       async () => {
 
@@ -108,7 +187,11 @@ export default function LocationExample() {
         })
         setLoading(false);  // 위치 정보를 받아왔으니 로딩 상태를 false로 변경
       })();
-  }, [searchedName]);
+  }, []);
+
+  useEffect(()=> {
+    realTimeCongestionApiCall();
+  }, [rendering]);
 
   const onRegionChange = (region: any) => {
     // setLocation({"latitude": region.latitude, "longitude": region.longitude});
@@ -159,9 +242,20 @@ export default function LocationExample() {
                   >
                     <View style={styles.balloonContainer}>
                       <View style={styles.balloon}>
-                        <Text style={styles.ballon_levelThree}>혼잡</Text>
+                        {
+                          item.congestionLevel === 1 ?
+                            <Text style={styles.ballon_levelOne}>여유</Text> :
+                            (
+                              item.congestionLevel === 2 ?
+                                <Text style={styles.ballon_levelTwo}>보통</Text> :
+                                (
+                                  item.congestionLevel === 3 ?
+                                    <Text style={styles.ballon_levelThree}>혼잡</Text> :
+                                    <Text style={styles.ballon_levelFour}>매우혼잡</Text>
+                                )
+                            )
+                        }
                         <Text style={styles.ballonText}>{item.name}</Text>
-                        
                       </View>
                       <View style={styles.arrow} />
                     </View>

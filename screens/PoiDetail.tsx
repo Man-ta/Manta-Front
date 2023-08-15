@@ -21,7 +21,7 @@ const PoiDetail = () => {
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/detail';
-    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
+    const appKey = 'OVBKI4CwsKaddtucxy7kE1i95vPgNrFc5OjLxED4';
 
     // API 호출
     axios.get(apiUrl, {
