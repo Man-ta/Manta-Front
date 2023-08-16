@@ -1,4 +1,3 @@
-// GoogleMap.tsx
 import React, { useEffect, useState } from "react";
 import MapView, { Callout, Marker } from "react-native-maps";
 import { ActivityIndicator, StyleSheet, View, Text, ToastAndroid } from "react-native";
@@ -51,7 +50,7 @@ export default function LocationExample() {
   // 제공 가능한 장소에 대한 정보를 호출
   const providedListApiCall = () => {
     const apiUrl = 'http://192.168.10.80:8085/place/data';
-    const appKey = 'hstbDwPIAk3NMHnBXTLWC9Huwiiyf2J17wOTXilf';
+    const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
 
     axios.get(apiUrl, {
       headers: {
@@ -62,7 +61,7 @@ export default function LocationExample() {
     })
       .then(response => {
         dispatch(setProvidedList(response.data.contents));
-        console.log("제공가능장소")
+        console.log("제공 가능 장소 api 호출")
       })
       .catch(error => {
         console.error('API 호출 에러:', error);
@@ -93,7 +92,7 @@ export default function LocationExample() {
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/search';
-    const appKey = 'hstbDwPIAk3NMHnBXTLWC9Huwiiyf2J17wOTXilf';
+    const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
 
     // API 호출
     axios.get(apiUrl, {
@@ -119,10 +118,10 @@ export default function LocationExample() {
         });
 
         dispatch(setPoiList(extractedData)); // 추출한 데이터를 상태에 저장
-        console.log("좌표 호출")
+        console.log("좌표 api 호출")
       })
       .catch(error => {
-        console.error('PoiSearch API 호출 에러:', error);
+        // console.error('좌표 API 호출 에러:', error);
       });
   };
 
@@ -137,7 +136,7 @@ export default function LocationExample() {
         };
 
         const apiUrl = 'http://192.168.10.80:8085/place/congestion';
-        const appKey = 'hstbDwPIAk3NMHnBXTLWC9Huwiiyf2J17wOTXilf';
+        const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
 
         const response = await axios.get(apiUrl, {
           params: CongestionResponseDto,
@@ -150,8 +149,8 @@ export default function LocationExample() {
 
         const congestionLevel = response.data.contents.rltm[0].congestionLevel;
 
-        console.log("실시간 혼잡도")
-        console.log("------------------------------------------------------")
+        console.log("실시간 혼잡도 api 호출")
+        console.log("----------------------------------------------------------")
         return {
           ...item,
           congestionLevel: congestionLevel,
@@ -169,14 +168,12 @@ export default function LocationExample() {
 
   useEffect(() => {
     providedListApiCall();
-    areaLLCode.forEach((item: string) => {
-      coordinateApiCall(item);
-    });
+
     (
       async () => {
 
         let { status } = await Location.requestForegroundPermissionsAsync();  // 위치 정보 열람에 대한 권한을 받아와서 status에 저장
-        console.log("승인 여부 : ", status);
+        // console.log("승인 여부 : ", status);
 
         // 사용자의 위치 정보를 받아와서 state에 저장
         let userLocation = await Location.getCurrentPositionAsync({});
@@ -190,6 +187,9 @@ export default function LocationExample() {
   }, []);
 
   useEffect(()=> {
+    areaLLCode.forEach((item: string) => {
+      coordinateApiCall(item);
+    });
     realTimeCongestionApiCall();
   }, [rendering]);
 

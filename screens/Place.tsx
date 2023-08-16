@@ -13,7 +13,7 @@ const Place = () => {
   const poiIdList = useSelector((state: RootState) => state.poiIDList);
 
   const providedListApiCall = () => {
-    const apiUrl = 'http://192.168.10.80:8085/place/data';
+    const apiUrl = 'http://192.168.219.103:8085/place/data';
     const appKey = 'hHVgIVpUL46cwtTAMs0Ie30gI50bs7LM4Zsiju7t';
 
     axios.get(apiUrl, {

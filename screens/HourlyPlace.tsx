@@ -13,12 +13,12 @@ const HourlyPlace = () => {
     // API 호출을 위한 파라미터 설정 (HourlyPlaceReponseDto 객체와 유사한 형식으로 설정)
     const HourlyPlaceReponseDto = {
       poiId : '10067845',
-      date: '20230803'
+      date: '20230815'
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/hourly';
-    const appKey = 'Wx2nWKKtpG1FUtKXQAORjaU1XsEQFZd94AZEc0os';
+    const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
 
     // API 호출
     axios.get(apiUrl, {
@@ -33,7 +33,7 @@ const HourlyPlace = () => {
     .then(response => {
       // API 응답 결과를 상태에 저장
       setApiResponse(response.data);
-      console.log(JSON.stringify(response.data));
+      console.log(JSON.stringify(response.data.contents));
     })
     .catch(error => {
       console.error('API 호출 에러:', error);

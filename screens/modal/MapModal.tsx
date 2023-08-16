@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { View, Text, Modal, Button, StyleSheet, Pressable, Image, Platform, TextInput } from "react-native"
+import { View, Text, Modal, Button, StyleSheet, Pressable, Image, Platform, TextInput, Alert } from "react-native"
 import { Calendar } from "react-native-calendars";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setModalVisible, setSelectedDate, setSelectedDates, setSelectedDotw, setSelectedTime } from "../../store";
+import { RootState, setLastDate, setModalVisible, setSelectedDate, setSelectedDates, setSelectedDotw, setSelectedTime, setStartDate, setVisitorCount } from "../../store";
+import axios from "axios";
 
 // 지도에서 혼잡도에 대한 정보를 필터링해서 볼 수 있도록 하는 컴포넌트
 const MapModal = () => {
@@ -26,9 +27,145 @@ const MapModal = () => {
   const selectedTime = useSelector((state: RootState) => state.selectedTime);  // 타임 피커에서 선택된 시간을 관리하는 state
 
   const selectedName = useSelector((state:RootState) => state.selectedName);
+  const selectedID = useSelector((state: RootState) => state.selectedID);
+  const visitorCount = useSelector((state: RootState) => state.visitorCount);
 
+  const startDate = useSelector((state: RootState) => state.startDate);
+  const lastDate = useSelector((state: RootState) => state.lastDate);
 
   const [changeModal, setChangeModal] = useState<boolean>(true);  // true, false에 따라 모달의 상태를 변경하는 state
+
+  const [statsResponse, setStatsResponse] = useState<stat[]>([]);
+
+  type stat = {
+    dow: string;
+    congestionLevel: number;
+  };
+
+  type DotwCongestionLevel = {
+    [key: string]: number[];
+  }
+
+  const dotw_avgCongestionLevel: DotwCongestionLevel = {
+    MON: [],
+    TUE: [],
+    WED: [],
+    THU: [],
+    FRI: [],
+    SAT: [],
+    SUN: [],
+  };
+  
+  if (statsResponse !== undefined) {
+    statsResponse.forEach(item => {
+      if (dotw_avgCongestionLevel[item.dow] !== undefined) {
+        dotw_avgCongestionLevel[item.dow].push(item.congestionLevel);
+      }
+    });
+  
+    // 평균 계산 및 저장
+    for (const dow in dotw_avgCongestionLevel) {
+      const levels = dotw_avgCongestionLevel[dow];
+      if (levels.length > 0) {
+        const total = levels.reduce((acc, val) => acc + val, 0);
+        const avg = total / levels.length;
+        dotw_avgCongestionLevel[dow] = [avg]; // 배열 대신 숫자로 저장
+      }
+    }
+  }
+
+  console.log("혼잡도 : ", dotw_avgCongestionLevel)
+
+  // console.log(selectedDate)
+  // console.log("변환된 날짜 : ", selectedDate.substring(0, 4) + selectedDate.substring(5, 7) + selectedDate.substring(8, 10));
+
+  // 혼잡도에 대한 통계를 불러오는 API
+  const statsCongestionApiCall = (selectedID: string) => {
+    // API 호출을 위한 파라미터 설정 (CongestionResponseDto 객체와 유사한 형식으로 설정)
+    const CongestionResponseDto = {
+      poiId: selectedID,
+    };
+
+    // API 호출 URL과 API 키 설정 (실제 값으로 수정)
+    const apiUrl = 'http://192.168.10.80:8085/place/Statistical';
+    const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
+
+    // API 호출
+    axios.get(apiUrl, {
+      params: CongestionResponseDto,
+      headers: {
+        appkey: appKey,
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        // API 응답 결과를 상태에 저장
+        dispatch(setStartDate(`${response.data.contents.statStartDate.substring(0, 4)}-${response.data.contents.statStartDate.substring(4, 6)}-${response.data.contents.statStartDate.substring(6, 8)}`));
+        dispatch(setLastDate(`${response.data.contents.statEndDate.substring(0, 4)}-${response.data.contents.statEndDate.substring(4, 6)}-${response.data.contents.statEndDate.substring(6, 8)}`));
+        // setStatsResponse(response.data.contents.stat);
+        console.log(response.data.contents.stat)
+        setStatsResponse(response.data.contents.stat);
+      })
+      .catch(error => {
+        console.error('통계성 혼잡도 API 호출 에러:', error);
+      });
+
+  };
+  useEffect(() => {
+    statsCongestionApiCall(selectedID);
+  }, []);
+
+
+  // 특정 날짜의 추정 방문자 수를 구하는 API
+  const visitorCountAPiCall = (selectedID: string) => {
+    // API 호출을 위한 파라미터 설정 (CongestionResponseDto 객체와 유사한 형식으로 설정)
+    const CongestionResponseDto = {
+      poiId: selectedID
+    };
+
+    // API 호출 URL과 API 키 설정 (실제 값으로 수정)
+    const apiUrl = 'http://192.168.10.80:8085/place/visitor';
+    const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
+
+    // API 호출
+    axios.get(apiUrl, {
+      params: CongestionResponseDto,
+      headers: {
+        appkey: appKey,
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        // API 호출 결과에서 선택한 날짜가 있는지 찾음
+        const findSelectedDate = (response.data.contents.raw).find((item: { date: string; }) => item.date === selectedDate.substring(0, 4) + selectedDate.substring(5, 7) + selectedDate.substring(8, 10));
+        if (findSelectedDate) {
+          const formattedDate = Math.floor(findSelectedDate.approxVisitorCount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          dispatch(setVisitorCount(formattedDate));
+        }
+        else {
+          // 선택한 날짜가 없을 때 경고창 띄우기
+          Alert.alert(
+            '알림',
+            '지난 한 달 이내의 날짜만 선택할 수 있습니다.',
+            [
+              {
+                text: '확인',
+              },
+            ],
+            { cancelable: false }
+          );
+        }
+      })
+  };
+
+
+  useEffect(() => {
+    if (selectedDate !== '선택') {
+      visitorCountAPiCall(selectedID);
+    }
+  }, [selectedDate]);
 
   // 달력에서 선택된 값을 state에 추가
   const addSelectedDates = (day: string) => {
@@ -90,6 +227,7 @@ const MapModal = () => {
   }
 
   const markedDates = generateMarkedDates(selectedDates);
+
 
   // console.log(selectedDates[0])
   // console.log(selectedDates[1])
@@ -197,10 +335,10 @@ const MapModal = () => {
                       </Pressable>
                       <View style={styles.dayView}>
                         <Pressable onPress={toggleManyDays} style={whetherDay === false ? styles.manyDaysSection : styles.oneDaySection}>
-                          <Text style={styles.manyDays}>여러 날짜</Text>
+                          <Text style={styles.manyDays}>혼잡도 통계</Text>
                         </Pressable>
                         <Pressable onPress={toggleDay} style={whetherDay === true ? styles.manyDaysSection : styles.oneDaySection}>
-                          <Text style={styles.oneDay}>하루</Text>
+                          <Text style={styles.oneDay}>추정 방문자 수</Text>
                         </Pressable>
                       </View>
                     </View>
@@ -218,10 +356,20 @@ const MapModal = () => {
                         </Text>
                         <Pressable onPress={toggleCalendar}>
                           <Text style={styles.selectedDate}>
-                            {selectedDates.length === 0 ? <Text style={styles.placeholder}>선택</Text> : <Text>{selectedDates[0]} ~ {selectedDates[1]}</Text>}
+                            {startDate} ~ {lastDate}
                           </Text>
                         </Pressable>
                       </View>
+                      {/* <View style={styles.dateView}>
+                        <Text style={styles.date}>
+                          날짜
+                        </Text>
+                        <Pressable onPress={toggleCalendar}>
+                          <Text style={styles.selectedDate}>
+                            {selectedDates.length === 0 ? <Text style={styles.placeholder}>선택</Text> : <Text>{selectedDates[0]} ~ {selectedDates[1]}</Text>}
+                          </Text>
+                        </Pressable>
+                      </View> */}
                       <Text style={styles.dotw}>
                         요일
                       </Text>
@@ -355,10 +503,10 @@ const MapModal = () => {
                         </Pressable>
                         <View style={styles.dayView}>
                           <Pressable onPress={toggleManyDays} style={whetherDay === false ? styles.manyDaysSection : styles.oneDaySection}>
-                            <Text style={styles.manyDays}>여러 날짜</Text>
+                            <Text style={styles.manyDays}>혼잡도 통계</Text>
                           </Pressable>
                           <Pressable onPress={toggleDay} style={whetherDay === true ? styles.manyDaysSection : styles.oneDaySection}>
-                            <Text style={styles.oneDay}>하루</Text>
+                            <Text style={styles.oneDay}>추정 방문자 수</Text>
                           </Pressable>
                         </View>
                       </View>
@@ -379,7 +527,7 @@ const MapModal = () => {
                           </Text>
                           <Pressable onPress={toggleDotw}>
                             <Text style={styles.selectedDotw}>
-                              25,019명
+                              약 {visitorCount}명
                             </Text>
                           </Pressable>
                         </View>

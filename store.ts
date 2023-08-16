@@ -2,6 +2,9 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 // state들의 타입 지정
 export type RootState = {
+  startDate: string,
+  lastDate: string,
+  visitorCount: number,
   rendering: boolean,
   modalVisible: boolean,
   selectedName: string,
@@ -17,6 +20,36 @@ export type RootState = {
   selectedTime: any,
   location: any,
 }
+
+const startDate = createSlice({
+  name: 'startDate',
+  initialState: '',
+  reducers: {
+    setStartDate(state, action) {
+      return action.payload;
+    }
+  }
+})
+
+const lastDate = createSlice({
+  name: 'lastDate',
+  initialState: '',
+  reducers: {
+    setLastDate(state, action) {
+      return action.payload;
+    }
+  }
+})
+
+const visitorCount = createSlice({
+  name: 'visitorCount',
+  initialState: '',
+  reducers: {
+    setVisitorCount(state, action) {
+      return action.payload;
+    }
+  }
+})
 
 const rendering = createSlice({
   name: 'rendering',
@@ -100,7 +133,7 @@ const placesList = createSlice({
 
 const searchedName = createSlice({
   name: 'searchedName',
-  initialState: '서울',
+  initialState: '',
   reducers: {
     setSearchedName(state, action) {
       return action.payload;
@@ -165,6 +198,9 @@ const location = createSlice({
 
 export default configureStore({
   reducer: {
+    startDate: startDate.reducer,
+    lastDate: lastDate.reducer,
+    visitorCount: visitorCount.reducer,
     rendering: rendering.reducer,
     modalVisible: modalVisible.reducer,
     selectedName: selectedName.reducer,
@@ -182,6 +218,9 @@ export default configureStore({
   }
 })
 
+export const { setStartDate } = startDate.actions;
+export const { setLastDate } = lastDate.actions;
+export const { setVisitorCount } = visitorCount.actions;
 export const { setRendering } = rendering.actions;
 export const { setModalVisible } = modalVisible.actions;
 export const { setSelectedName } = selectedName.actions;

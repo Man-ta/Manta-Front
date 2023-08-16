@@ -14,7 +14,7 @@ const VisitorCount = () => {
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.10.80:8085/place/visitor';
-    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
+    const appKey = '82rAj7PkhQFIpQt6Ppvb8BmhuGD2pxb8RfxgGmr9';
     // const apiUrl = 'http://192.168.45.29:8085/place/visitor';
     // const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
 

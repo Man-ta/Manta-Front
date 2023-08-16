@@ -1,0 +1,50 @@
+  // 첫번째 렌더링(input은 비어있음)
+  LOG  poiList :  []
+  LOG  poiList :  []
+  LOG  제공 가능 장소 api 호출
+
+ // 두번째 렌더링(input 입력 후 엔터키 누름)
+ LOG  poiList :  []
+ LOG  poiList :  []
+ LOG  제공 가능 장소 api 호출
+ LOG  poiList :  []
+ LOG  poiList :  []
+ LOG  poiList :  []
+ LOG  poiList :  []
+ LOG  poiList :  []
+ LOG  false
+ LOG  poiList :  []
+ LOG  poiList :  []
+ LOG  poiList :  []
+ LOG  좌표 api 호출
+ LOG  poiList :  [{"centerLat": "37.43380367", "centerLon": "127.01910441", "id": "192300", "name": "서울랜드"}, {"centerLat": "37.78981207", "centerLon": "126.69784590", "id": "736441", "name": "헤이리예술마을"}, {"centerLat": "37.42858205", "centerLon": "127.01907678", "id": "381867", "name": "서 
+울대공원"}, {"centerLat": "37.42378048", "centerLon": "127.20953183", "id": "310829", "name": "뉴서울CC"}, {"centerLat": "37.66916032", "centerLon": "126.74565049", "id": "729930", "name": "킨텍스 제1전시장"}, {"centerLat": "37.49707676", "centerLon": "127.16678363", "id": "361764", "name": "캐슬렉 
+스서울GC"}, {"centerLat": "37.66466077", "centerLon": "126.74178986", "id": "2754697", "name": "킨텍스 제2전시장"}]
+ LOG  좌표 api 호출
+ LOG  poiList :  [{"centerLat": "37.55470543", "centerLon": "126.97068873", "id": "219821", "name": "서울역"}, {"centerLat": "37.55892416", "centerLon": "126.80292613", "id": "11614", "name": "김포국제공항국내선"}, {"centerLat": "37.56825809", "centerLon": "126.89725060", "id": "212597", "name": "서
+울월드컵경기장"}, {"centerLat": "37.61281208", "centerLon": "127.09817547", "id": "2499371", "name": "서울의료원"}]
+ LOG  좌표 api 호출
+
+
+ // 세번째 렌더링(혼잡도 호출이 안 돼서 엔터키 한 번 더 누름 / congestionLevel이 혼잡도입니다)
+ LOG  true
+ LOG  poiList :  [{"centerLat": "37.55470543", "centerLon": "126.97068873", "id": "219821", "name": "서울역"}, {"centerLat": "37.55892416", "centerLon": "126.80292613", "id": "11614", "name": "김포국제공항국내선"}, {"centerLat": "37.56825809", "centerLon": "126.89725060", "id": "212597", "name": "서
+울월드컵경기장"}, {"centerLat": "37.61281208", "centerLon": "127.09817547", "id": "2499371", "name": "서울의료원"}]
+ LOG  실시간 혼잡도 api 호출
+ LOG  ----------------------------------------------------------
+ LOG  실시간 혼잡도 api 호출
+ LOG  ----------------------------------------------------------
+ LOG  실시간 혼잡도 api 호출
+ LOG  ----------------------------------------------------------
+ LOG  poiList :  [{"centerLat": "37.43380367", "centerLon": "127.01910441", "id": "192300", "name": "서울랜드"}, {"centerLat": "37.78981207", "centerLon": "126.69784590", "id": "736441", "name": "헤이리예술마을"}, {"centerLat": "37.42858205", "centerLon": "127.01907678", "id": "381867", "name": "서 
+울대공원"}, {"centerLat": "37.42378048", "centerLon": "127.20953183", "id": "310829", "name": "뉴서울CC"}, {"centerLat": "37.66916032", "centerLon": "126.74565049", "id": "729930", "name": "킨텍스 제1전시장"}, {"centerLat": "37.49707676", "centerLon": "127.16678363", "id": "361764", "name": "캐슬렉 
+스서울GC"}, {"centerLat": "37.66466077", "centerLon": "126.74178986", "id": "2754697", "name": "킨텍스 제2전시장"}]
+ LOG  좌표 api 호출
+ LOG  실시간 혼잡도 api 호출
+ LOG  ----------------------------------------------------------
+ LOG  poiList :  [{"centerLat": "37.55470543", "centerLon": "126.97068873", "congestionLevel": 1, "id": "219821", "name": "서울역"}, {"centerLat": "37.55892416", "centerLon": "126.80292613", "congestionLevel": 3, "id": "11614", "name": "김포국제공항국내선"}, {"centerLat": "37.56825809", "centerLon": "126.89725060", "congestionLevel": 1, "id": "212597", "name": "서울월드컵경기장"}, {"centerLat": "37.61281208", "centerLon": "127.09817547", "congestionLevel": 1, "id": "2499371", "name": "서울의료원"}]
+ LOG  poiList :  []
+ LOG  좌표 api 호출  // 여기서 좌표 api가 다시 호출되면서 값이 덮어씌워집니다
+ LOG  poiList :  [{"centerLat": "37.55470543", "centerLon": "126.97068873", "id": "219821", "name": "서울역"}, {"centerLat": "37.55892416", "centerLon": "126.80292613", "id": "11614", "name": "김포국제공항국내선"}, {"centerLat": "37.56825809", "centerLon": "126.89725060", "id": "212597", "name": "서
+울월드컵경기장"}, {"centerLat": "37.61281208", "centerLon": "127.09817547", "id": "2499371", "name": "서울의료원"}]
+ LOG  좌표 api 호출
