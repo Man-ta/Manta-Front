@@ -1,7 +1,0 @@
-{"poiDetailInfo":
-{"id":"497342","viewId":"","dbKind":"S","pkey":"49734200","navSeq":"0","name":"인천국제공항 제1여객터미널","bizCatName":"공항","address":"인천 중구 운서동","firstNo":"2840","secondNo":"","zipCode":"","tel":"1577-2600","mlClass":"1","lcdName":"인천","mcdName":"중구","scdName":"운서동","dcdName":"","bldAddr":"인천 중구 공항로","roadScdName":"","roadName":"공항로","bldNo1":"272","bldNo2":"","lat":"37.44929181","lon":"126.45079466","frontLat":"37.44909745","frontLon":"126.45432212","menu1":"","menu2":"","menu3":"","menu4":"","menu5":"","parkFlag":"","twFlag":"0","yaFlag":"","homepageURL":"www.airport.kr","routeInfo":"","facility":"","upperLegalCode":"28","middleLegalCode":"110","lowerLegalCode":"147","detailLegalCode":"00","upperAdminCode":"28","middleAdminCode":"110","lowerAdminCode":"628","upperCode":"","middleCode":"","lowerCode":"","participant":"","point":"","merchantFlag":"","merchantDispType":"","additionalInfo":"","desc":"취항항공사 - 아시아나항공, 제주항공, 티웨이항공, 이스타항공, 에어서울, 기타 외국항공사","mngName":"","mngId":"","freeYn":"","reservYn":"","useTime":"","payYn":"","fee":"","updateDt":"","totalCnt":"0","evChargers":[]
-}
-}
-
-
-id, name, lat, let
