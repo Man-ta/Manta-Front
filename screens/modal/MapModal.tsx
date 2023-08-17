@@ -86,7 +86,7 @@ const MapModal = () => {
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.0.53:8085/place/Statistical';
-    const appKey = 'l7xx609575498cc44d358d3b919deed6542e';
+    const appKey = 'hHVgIVpUL46cwtTAMs0Ie30gI50bs7LM4Zsiju7t';
 
     // API 호출
     axios.get(apiUrl, {
@@ -125,7 +125,7 @@ const MapModal = () => {
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.0.53:8085/place/visitor';
-    const appKey = 'l7xx609575498cc44d358d3b919deed6542e';
+    const appKey = 'hHVgIVpUL46cwtTAMs0Ie30gI50bs7LM4Zsiju7t';
 
     // API 호출
     axios.get(apiUrl, {
@@ -468,6 +468,9 @@ const MapModal = () => {
                                 )
                             )
                         }
+                        <Text style={styles.congestion}>
+                          현재 {selectedName}은 <Text style={styles.congestion_levelFour}>매우 혼잡</Text>해요!
+                        </Text>
                       </View>
                       <View style={styles.dateView}>
                         <Text style={styles.date}>
@@ -820,6 +823,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '100%',
     borderRadius: 30,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0
   },
   header: {
     flexDirection: 'row',

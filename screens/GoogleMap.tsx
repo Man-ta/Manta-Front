@@ -9,7 +9,7 @@ import { setLocation } from "../store";
 import axios from "axios";
 import { MapModal } from "./modal/MapModal";
 
-export default function LocationExample() {
+export default function GoogleMap() {
 
   const dispatch = useDispatch();
 
@@ -49,7 +49,7 @@ export default function LocationExample() {
   // 제공 가능한 장소에 대한 정보를 호출
   const providedListApiCall = () => {
     const apiUrl = 'http://192.168.0.53:8085/place/data';
-    const appKey = 'l7xx609575498cc44d358d3b919deed6542e';
+    const appKey = 'hHVgIVpUL46cwtTAMs0Ie30gI50bs7LM4Zsiju7t';
 
     axios.get(apiUrl, {
       headers: {
@@ -63,7 +63,7 @@ export default function LocationExample() {
         console.log("제공 가능 장소 api 호출")
       })
       .catch(error => {
-        console.error('제공 가능 장소 API 호출 에러:', error);
+        // console.error('제공 가능 장소 API 호출 에러:', error);
       });
   };  
 
@@ -91,7 +91,7 @@ export default function LocationExample() {
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
     const apiUrl = 'http://192.168.0.53:8085/place/search';
-    const appKey = 'l7xx609575498cc44d358d3b919deed6542e';
+    const appKey = 'hHVgIVpUL46cwtTAMs0Ie30gI50bs7LM4Zsiju7t';
 
     // API 호출
     axios.get(apiUrl, {
@@ -124,7 +124,7 @@ export default function LocationExample() {
 
       })
       .catch(error => {
-        console.error('좌표 API 호출 에러:', error);
+        // console.error('좌표 API 호출 에러:', error);
       });
   };
 
@@ -139,7 +139,7 @@ export default function LocationExample() {
         };
 
         const apiUrl = 'http://192.168.0.53:8085/place/congestion';
-        const appKey = 'l7xx609575498cc44d358d3b919deed6542e';
+        const appKey = 'hHVgIVpUL46cwtTAMs0Ie30gI50bs7LM4Zsiju7t';
 
         const response = await axios.get(apiUrl, {
           params: CongestionResponseDto,
@@ -161,7 +161,7 @@ export default function LocationExample() {
         };
 
       } catch (error) {
-        console.error('실시간 혼잡도 API 호출 에러:', error);
+        // console.error('실시간 혼잡도 API 호출 에러:', error);
         return item;
       }
     }));
@@ -220,6 +220,16 @@ export default function LocationExample() {
   // console.log(location);
   // console.log(temp);
 
+  const blueDot = (
+    <Marker
+      coordinate={{
+        latitude: mapRegion.latitude,
+        longitude: mapRegion.longitude,
+      }}
+      pinColor="red" // 파란색으로 설정
+    />
+  );
+
   return (
     <View style={styles.container}>
       
@@ -274,11 +284,7 @@ export default function LocationExample() {
 
                   </Marker>
                 ))}
-
-                {/* {
-                  modalVisible === false ? null : <MapModal />
-                } */}
-
+              {blueDot}
             </MapView>
 
           )
