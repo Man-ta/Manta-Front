@@ -4,61 +4,43 @@ import axios from 'axios';
 import { MapModal } from "./modal/MapModal";
 import GoogleMap from "./GoogleMap";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setLocation, setSearchedName } from "../store";
+import { RootState, setLocation, setSearchedName, setPoiIDList, setPoiList, setRendering } from "../store";
 
 
 // 실시간 장소 혼잡도를 보여주는 컴포넌트
 const MapCongestion = () => {
 
-  const [apiResponse, setApiResponse] = useState(null);
-
-  const handleApiCall = () => {
-    // API 호출을 위한 파라미터 설정 (CongestionResponseDto 객체와 유사한 형식으로 설정)
-    const CongestionResponseDto = {
-      poiId: '10067845'
-    };
-
-    // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.10.80:8085/place/congestion';
-    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
-    // const apiUrl = 'http://192.168.45.29:8085/place/congestion';
-    // const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
-
-    // API 호출
-    axios.get(apiUrl, {
-      params: CongestionResponseDto,
-      headers: {
-        appkey: '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf',
-        'accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => {
-        // API 응답 결과를 상태에 저장
-        setApiResponse(response.data);
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(error => {
-        console.error('API 호출 에러:', error);
-      });
-  };
-  useEffect(() => {
-    handleApiCall();
-  }, []);
-
-  console.log(apiResponse);
-
-  // ----------------------------------------------------------------------------------------------------------------------------------------------
-
   const dispatch = useDispatch();
 
+  const [apiResponse, setApiResponse] = useState('');
+  const poiList = useSelector((state: RootState) => state.poiList);
+  const poiIDList = useSelector((state: RootState) => state.poiIDList);
   const [explainVisible, setExplainVisible] = useState<boolean>(false);  // 혼잡 레벨에 대해 상세 설명이 있는 모달에 관한 on/off를 관리하는 state
-  const location = useSelector((state: RootState) => state.location);
   const searchedName = useSelector((state: RootState) => state.searchedName);
+  const modalVisible = useSelector((state: RootState) => state.modalVisible);
+  const selectedID = useSelector((state:RootState) => state.selectedID);
+  const rendering = useSelector((state: RootState) => state.rendering);
+
+
+  type Poi = {
+    id: string,
+    name: string,
+    centerLat: string,
+    centerLon: string,
+    newAddressList: any
+  }
+
+  // console.log("poiList : ", poiList)
 
   // searchedName의 state를 TextInput에 입력한 글자로 바꿈
   const textChange = (text: string) => {
     dispatch(setSearchedName(text));
+  }
+
+  // TextInput에 값을 입력하고 엔터키를 누르면 작동
+  const handleEnterPress = () => {
+    dispatch(setRendering(!rendering));
+    console.log(rendering);
   }
 
   const toggleExplainModal = () => {
@@ -68,15 +50,19 @@ const MapCongestion = () => {
   // {"latitude": 37.44789568747357, "longitude": 126.64944946904347}
   const setCurrentLocation = () => {
     // dispatch(setLocation(location));
-    console.log("클릭")
+    // console.log("클릭")
   }
+  // dispatch(setPoiList(extractedData));
+
 
   return (
     <>
-      <View style={styles.container}>
+      <View style={styles.container}>        
 
         <GoogleMap />
-        {/* <MapModal /> */}
+        {
+          modalVisible === false ? <MapModal /> : null
+        }
 
         {/* 상단 검색영역  */}
         <View style={styles.searchContainer}>
@@ -86,7 +72,9 @@ const MapCongestion = () => {
               placeholder="장소를 검색하세요!"
               value={searchedName}
               onChangeText={textChange}
-              style={styles.searchText} />
+              onSubmitEditing={handleEnterPress}
+              style={styles.searchText}
+            />
           </View>
         </View>
 
@@ -95,13 +83,14 @@ const MapCongestion = () => {
           <Image source={require('../assets/images/question-icon.png')} style={styles.questionIcon} />
         </Pressable>
 
-        <View style={styles.balloonContainer}>
+        {/* 장소에 대한 정보가 있는 툴팁 */}
+        {/* <View style={styles.balloonContainer}>
           <View style={styles.balloon}>
-            <Text style={styles.ballon_levelTwo}>보통</Text>
+            <Text style={styles.ballon_levelThree}>혼잡</Text>
             <Text style={styles.ballonText}>롯데백화점 인천점</Text>
           </View>
           <View style={styles.arrow} />
-        </View>
+        </View> */}
 
         {/* 혼잡 레벨에 대해 상세 설명이 있는 모달 */}
         <Modal animationType="none" transparent={true} visible={explainVisible} onRequestClose={() => setExplainVisible(false)}>
@@ -110,9 +99,9 @@ const MapCongestion = () => {
               <Pressable onPress={toggleExplainModal} style={styles.closeButton}>
                 <Image source={require('../assets/images/close-icon.png')} style={styles.closeIcon} />
               </Pressable>
-              <Text style={styles.ex_levelOne}><Text style={{ color: '#C2F5EF', fontWeight: 'bold' }}>여유(1단계)</Text> : 전방의 시야가 트여있는 상태</Text>
-              <Text style={styles.ex_levelTwo}><Text style={{ color: '#7BD1D1', fontWeight: 'bold' }}>보통(2단계)</Text> : 전방의 시야가 다소 막힌 상태</Text>
-              <Text style={styles.ex_levelThree}><Text style={{ color: '#F5B06C', fontWeight: 'bold' }}>혼잡(3단계)</Text> : 지나가는 사람과 서로 부딪힐 수 있는 상태</Text>
+              <Text style={styles.ex_levelOne}><Text style={{ color: '#ACF1E9', fontWeight: 'bold' }}>여유(1단계)</Text> : 전방의 시야가 트여있는 상태</Text>
+              <Text style={styles.ex_levelTwo}><Text style={{ color: '#54B2B2', fontWeight: 'bold' }}>보통(2단계)</Text> : 전방의 시야가 다소 막힌 상태</Text>
+              <Text style={styles.ex_levelThree}><Text style={{ color: '#F39C46', fontWeight: 'bold' }}>혼잡(3단계)</Text> : 지나가는 사람과 서로 부딪힐 수 있는 상태</Text>
               <Text style={styles.ex_levelFour}><Text style={{ color: '#D36E85', fontWeight: 'bold' }}>매우혼잡(4단계)</Text> : 매우 혼잡하여 불쾌할 수 있는 상태</Text>
               <Text style={styles.ex_congestion}>
                 * 혼잡도는 특정 장소의 추정 방문자 수를 연면적('㎡')으로 나눈 값으로, 단위 면적('㎡')당 추정 방문자의 수를 의미합니다. {'\n'}
@@ -126,6 +115,8 @@ const MapCongestion = () => {
         <Pressable onPress={setCurrentLocation} style={styles.locationButton}>
           <Image source={require('../assets/images/location-icon.png')} style={styles.locationIcon} />
         </Pressable>
+
+        <MapModal />
 
         {/* 우측 하단 혼잡 레벨에 관한 모달 */}
         <View style={styles.infoView}>
@@ -213,12 +204,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
     fontWeight: 'bold',
-    backgroundColor: '#C2F5EF',
+    backgroundColor: '#ACF1E9',
     height: 24,
     padding: 5,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#C2F5EF',
+    borderColor: '#ACF1E9',
     overflow: 'hidden',
     textAlign: 'center',
   },
@@ -226,12 +217,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
     fontWeight: 'bold',
-    backgroundColor: '#7BD1D1',
+    backgroundColor: '#54B2B2',
     height: 24,
     padding: 5,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#7BD1D1',
+    borderColor: '#54B2B2',
     overflow: 'hidden',
     textAlign: 'center',
   },
@@ -239,12 +230,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
     fontWeight: 'bold',
-    backgroundColor: '#F5B06C',
+    backgroundColor: '#F39C46',
     height: 24,
     padding: 5,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#F5B06C',
+    borderColor: '#F39C46',
     overflow: 'hidden',
     textAlign: 'center',
   },
@@ -401,5 +392,6 @@ const styles = StyleSheet.create({
     borderColor: '#999999',
     overflow: 'hidden',
     textAlign: 'center',
+    marginBottom: 5,
   },
 });

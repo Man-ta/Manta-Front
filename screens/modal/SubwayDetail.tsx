@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { View, Text, Button, Modal, StyleSheet } from "react-native"
 

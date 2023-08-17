@@ -13,21 +13,18 @@ const HourlyPlace = () => {
     // API 호출을 위한 파라미터 설정 (HourlyPlaceReponseDto 객체와 유사한 형식으로 설정)
     const HourlyPlaceReponseDto = {
       poiId : '10067845',
-      date: '20230803'
+      date: '20230815'
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.10.80:8085/place/hourly';
-    const appKey = '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf';
-    // const apiUrl = 'http://192.168.45.29:8085/place/hourly';
-    // const appKey = 'Glus98D8701NAVDh5d0iB7BRUTtA7NX77DbSioES';
-
+    const apiUrl = 'http://192.168.0.53:8085/place/hourly';
+    const appKey = 'OVBKI4CwsKaddtucxy7kE1i95vPgNrFc5OjLxED4';
 
     // API 호출
     axios.get(apiUrl, {
       params: HourlyPlaceReponseDto,
       headers: {
-        appkey: '2g1pkfbjAB3LXPV8ymxV87iexe1q2KZbzmqgnbIf',
+        appkey: appKey,
         'accept' : 'application/json',
         'Content-Type': 'application/json',
 
@@ -39,7 +36,7 @@ const HourlyPlace = () => {
       console.log(JSON.stringify(response.data));
     })
     .catch(error => {
-      console.error('API 호출 에러:', error);
+      // console.error('실시간 정보 API 호출 에러:', error);
     });
   };
   useEffect(() => {
