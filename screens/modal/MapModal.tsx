@@ -5,7 +5,7 @@ import { Calendar } from "react-native-calendars";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setLastDate, setModalVisible, setSelectedDate, setSelectedDates, setSelectedDotw, setSelectedTime, setStartDate, setVisitorCount } from "../../store";
+import { RootState, setLastDate, setModalVisible, setSelectedCongAvg, setSelectedDate, setSelectedDates, setSelectedDotw, setSelectedTime, setStartDate, setVisitorCount } from "../../store";
 import axios from "axios";
 
 // 지도에서 혼잡도에 대한 정보를 필터링해서 볼 수 있도록 하는 컴포넌트
@@ -32,6 +32,8 @@ const MapModal = () => {
 
   const startDate = useSelector((state: RootState) => state.startDate);
   const lastDate = useSelector((state: RootState) => state.lastDate);
+  const selectedCongLv = useSelector((state: RootState) => state.selectedCongLv);
+  const selectedCongAvg = useSelector((state: RootState) => state.selectedCongAvg);
 
   const [changeModal, setChangeModal] = useState<boolean>(true);  // true, false에 따라 모달의 상태를 변경하는 state
 
@@ -72,12 +74,8 @@ const MapModal = () => {
         dotw_avgCongestionLevel[dow] = [avg]; // 배열 대신 숫자로 저장
       }
     }
+
   }
-
-  console.log("혼잡도 : ", dotw_avgCongestionLevel)
-
-  // console.log(selectedDate)
-  // console.log("변환된 날짜 : ", selectedDate.substring(0, 4) + selectedDate.substring(5, 7) + selectedDate.substring(8, 10));
 
   // 혼잡도에 대한 통계를 불러오는 API
   const statsCongestionApiCall = (selectedID: string) => {
@@ -87,8 +85,8 @@ const MapModal = () => {
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.10.80:8085/place/Statistical';
-    const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
+    const apiUrl = 'http://192.168.0.53:8085/place/Statistical';
+    const appKey = 'l7xx609575498cc44d358d3b919deed6542e';
 
     // API 호출
     axios.get(apiUrl, {
@@ -104,17 +102,18 @@ const MapModal = () => {
         dispatch(setStartDate(`${response.data.contents.statStartDate.substring(0, 4)}-${response.data.contents.statStartDate.substring(4, 6)}-${response.data.contents.statStartDate.substring(6, 8)}`));
         dispatch(setLastDate(`${response.data.contents.statEndDate.substring(0, 4)}-${response.data.contents.statEndDate.substring(4, 6)}-${response.data.contents.statEndDate.substring(6, 8)}`));
         // setStatsResponse(response.data.contents.stat);
-        console.log(response.data.contents.stat)
+        // console.log(response.data.contents.stat)
         setStatsResponse(response.data.contents.stat);
       })
       .catch(error => {
-        console.error('통계성 혼잡도 API 호출 에러:', error);
+        // console.error('통계성 혼잡도 API 호출 에러:', error);
       });
 
   };
+
   useEffect(() => {
     statsCongestionApiCall(selectedID);
-  }, []);
+  }, [selectedID]);
 
 
   // 특정 날짜의 추정 방문자 수를 구하는 API
@@ -125,8 +124,8 @@ const MapModal = () => {
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.10.80:8085/place/visitor';
-    const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
+    const apiUrl = 'http://192.168.0.53:8085/place/visitor';
+    const appKey = 'l7xx609575498cc44d358d3b919deed6542e';
 
     // API 호출
     axios.get(apiUrl, {
@@ -138,7 +137,7 @@ const MapModal = () => {
       },
     })
       .then(response => {
-        // API 호출 결과에서 선택한 날짜가 있는지 찾음
+        // API 호출 결과에서 선택한 날짜가 있는지 찾고, 있다면 형식 변경
         const findSelectedDate = (response.data.contents.raw).find((item: { date: string; }) => item.date === selectedDate.substring(0, 4) + selectedDate.substring(5, 7) + selectedDate.substring(8, 10));
         if (findSelectedDate) {
           const formattedDate = Math.floor(findSelectedDate.approxVisitorCount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -158,8 +157,10 @@ const MapModal = () => {
           );
         }
       })
+      .catch(error => {
+        console.log("방문자수 에러 : ", error)
+      })
   };
-
 
   useEffect(() => {
     if (selectedDate !== '선택') {
@@ -228,7 +229,6 @@ const MapModal = () => {
 
   const markedDates = generateMarkedDates(selectedDates);
 
-
   // console.log(selectedDates[0])
   // console.log(selectedDates[1])
 
@@ -251,7 +251,6 @@ const MapModal = () => {
   // let threeMonthT = new Date();
   // threeMonthT.setMonth(today.getMonth()-3);
   // console.log("3개월 전 오늘 : " + threeMonthT);
-
 
   // '여러 날짜' 영역과 '하루' 영역을 순환
   const toggleManyDays = () => {
@@ -283,6 +282,108 @@ const MapModal = () => {
   // 요일을 고르는 모달의 on/off 기능
   const toggleDotw = () => {
     setDotwVisible(!dotwVisible);
+
+    switch (selectedDotw) {
+      case '월요일':
+        if (dotw_avgCongestionLevel.MON[0] >= 1 && dotw_avgCongestionLevel.MON[0] < 2) {
+          dispatch(setSelectedCongAvg('여유'));
+        }
+        else if (dotw_avgCongestionLevel.MON[0] >= 2 && dotw_avgCongestionLevel.MON[0] < 3) {
+          dispatch(setSelectedCongAvg('보통'));
+        }
+        else if (dotw_avgCongestionLevel.MON[0] >= 3 && dotw_avgCongestionLevel.MON[0] < 3.5) {
+          dispatch(setSelectedCongAvg('혼잡'));
+        }
+        else if (dotw_avgCongestionLevel.MON[0] >= 3.5) {
+          dispatch(setSelectedCongAvg('매우 혼잡'))
+        }
+        break;
+      case '화요일':
+        if (dotw_avgCongestionLevel.TUE[0] >= 1 && dotw_avgCongestionLevel.TUE[0] < 2) {
+          dispatch(setSelectedCongAvg('여유'));
+        }
+        else if (dotw_avgCongestionLevel.TUE[0] >= 2 && dotw_avgCongestionLevel.TUE[0] < 3) {
+          dispatch(setSelectedCongAvg('보통'));
+        }
+        else if (dotw_avgCongestionLevel.TUE[0] >= 3 && dotw_avgCongestionLevel.TUE[0] < 3.5) {
+          dispatch(setSelectedCongAvg('혼잡'));
+        }
+        else if (dotw_avgCongestionLevel.TUE[0] >= 3.5) {
+          dispatch(setSelectedCongAvg('매우 혼잡'))
+        }
+        break;
+      case '수요일':
+        if (dotw_avgCongestionLevel.WED[0] >= 1 && dotw_avgCongestionLevel.WED[0] < 2) {
+          dispatch(setSelectedCongAvg('여유'));
+        }
+        else if (dotw_avgCongestionLevel.WED[0] >= 2 && dotw_avgCongestionLevel.WED[0] < 3) {
+          dispatch(setSelectedCongAvg('보통'));
+        }
+        else if (dotw_avgCongestionLevel.WED[0] >= 3 && dotw_avgCongestionLevel.WED[0] < 3.5) {
+          dispatch(setSelectedCongAvg('혼잡'));
+        }
+        else if (dotw_avgCongestionLevel.WED[0] >= 3.5) {
+          dispatch(setSelectedCongAvg('매우 혼잡'))
+        }
+        break;
+      case '목요일':
+        if (dotw_avgCongestionLevel.THU[0] >= 1 && dotw_avgCongestionLevel.THU[0] < 2) {
+          dispatch(setSelectedCongAvg('여유'));
+        }
+        else if (dotw_avgCongestionLevel.THU[0] >= 2 && dotw_avgCongestionLevel.THU[0] < 3) {
+          dispatch(setSelectedCongAvg('보통'));
+        }
+        else if (dotw_avgCongestionLevel.THU[0] >= 3 && dotw_avgCongestionLevel.THU[0] < 3.5) {
+          dispatch(setSelectedCongAvg('혼잡'));
+        }
+        else if (dotw_avgCongestionLevel.THU[0] >= 3.5) {
+          dispatch(setSelectedCongAvg('매우 혼잡'))
+        }
+        break;
+      case '금요일':
+        if (dotw_avgCongestionLevel.FRI[0] >= 1 && dotw_avgCongestionLevel.FRI[0] < 2) {
+          dispatch(setSelectedCongAvg('여유'));
+        }
+        else if (dotw_avgCongestionLevel.FRI[0] >= 2 && dotw_avgCongestionLevel.FRI[0] < 3) {
+          dispatch(setSelectedCongAvg('보통'));
+        }
+        else if (dotw_avgCongestionLevel.FRI[0] >= 3 && dotw_avgCongestionLevel.FRI[0] < 3.5) {
+          dispatch(setSelectedCongAvg('혼잡'));
+        }
+        else if (dotw_avgCongestionLevel.FRI[0] >= 3.5) {
+          dispatch(setSelectedCongAvg('매우 혼잡'))
+        }
+        break;
+      case '토요일':
+        console.log(dotw_avgCongestionLevel.SAT[0])
+        if (dotw_avgCongestionLevel.SAT[0] >= 1 && dotw_avgCongestionLevel.SAT[0] < 2) {
+          dispatch(setSelectedCongAvg('여유'));
+        }
+        else if (dotw_avgCongestionLevel.SAT[0] >= 2 && dotw_avgCongestionLevel.SAT[0] < 3) {
+          dispatch(setSelectedCongAvg('보통'));
+        }
+        else if (dotw_avgCongestionLevel.SAT[0] >= 3 && dotw_avgCongestionLevel.SAT[0] < 3.5) {
+          dispatch(setSelectedCongAvg('혼잡'));
+        }
+        else if (dotw_avgCongestionLevel.SAT[0] >= 3.5) {
+          dispatch(setSelectedCongAvg('매우 혼잡'))
+        }
+        break;
+      case '일요일':
+        if (dotw_avgCongestionLevel.SUN[0] >= 1 && dotw_avgCongestionLevel.SUN[0] < 2) {
+          dispatch(setSelectedCongAvg('여유'));
+        }
+        else if (dotw_avgCongestionLevel.SUN[0] >= 2 && dotw_avgCongestionLevel.SUN[0] < 3) {
+          dispatch(setSelectedCongAvg('보통'));
+        }
+        else if (dotw_avgCongestionLevel.SUN[0] >= 3 && dotw_avgCongestionLevel.SUN[0] < 3.5) {
+          dispatch(setSelectedCongAvg('혼잡'));
+        }
+        else if (dotw_avgCongestionLevel.SUN[0] >= 3.5) {
+          dispatch(setSelectedCongAvg('매우 혼잡'))
+        }
+        break;
+    }
   }
 
   // 시간을 선택하는 모달의 on/off 기능
@@ -346,9 +447,27 @@ const MapModal = () => {
                     {/* 모달의 주요 내용이 있는 영역 */}
                     <View style={styles.contents}>
                       <View style={styles.congestionView}>
-                        <Text style={styles.congestion}>
-                          현재 {selectedName}은 <Text style={styles.congestionDetail}>매우 혼잡</Text>해요!
-                        </Text>
+                        {
+                          selectedCongLv === 1 ? 
+                            <Text style={styles.congestion}>
+                              현재 {selectedName}은 <Text style={styles.congestion_levelOne}>여유</Text>로워요!
+                            </Text> :
+                            (
+                              selectedCongLv === 2 ?
+                                <Text style={styles.congestion}>
+                                  현재 {selectedName}의 혼잡도는 <Text style={styles.congestion_levelTwo}>보통</Text>이에요!
+                                </Text> :
+                                (
+                                  selectedCongLv === 3 ?
+                                    <Text style={styles.congestion}>
+                                      현재 {selectedName}은 <Text style={styles.congestion_levelThree}>혼잡</Text>해요!
+                                    </Text> :
+                                    <Text style={styles.congestion}>
+                                      현재 {selectedName}은 <Text style={styles.congestion_levelFour}>매우 혼잡</Text>해요!
+                                    </Text> 
+                                )
+                            )
+                        }
                       </View>
                       <View style={styles.dateView}>
                         <Text style={styles.date}>
@@ -388,7 +507,10 @@ const MapModal = () => {
                         평균 혼잡도
                       </Text>
                       <Text style={styles.selectedDotw}>
-                        25,019명
+                        {
+                          selectedDotw !== '선택' && selectedTime !== '선택' &&
+                          <Text style={styles.selectedDotw}>{selectedCongAvg}</Text>
+                        }
                       </Text>
                     </View>
 
@@ -585,14 +707,6 @@ const MapModal = () => {
   )
 }
 
-const manyDatesModal = () => {
-
-}
-
-const DateModal = () => {
-  
-}
-
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -772,6 +886,22 @@ const styles = StyleSheet.create({
   congestion: {
     fontSize: 17,
     paddingTop: 5,
+  },
+  congestion_levelOne: {
+    color: '#ACF1E9',
+    fontWeight: 'bold',
+  },
+  congestion_levelTwo: {
+    color: '#54B2B2',
+    fontWeight: 'bold',
+  },
+  congestion_levelThree: {
+    color: '#F39C46',
+    fontWeight: 'bold',
+  },
+  congestion_levelFour: {
+    color: '#D36E85',
+    fontWeight: 'bold',
   },
   congestionDetail: {
     fontWeight: 'bold',

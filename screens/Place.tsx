@@ -13,8 +13,8 @@ const Place = () => {
   const poiIdList = useSelector((state: RootState) => state.poiIDList);
 
   const providedListApiCall = () => {
-    const apiUrl = 'http://192.168.219.103:8085/place/data';
-    const appKey = 'hHVgIVpUL46cwtTAMs0Ie30gI50bs7LM4Zsiju7t';
+    const apiUrl = 'http://192.168.0.53:8085/place/data';
+    const appKey = '7xa32VL7NWaSlgfIyRZvja44gs5Uijk36GPMXKy1';
 
     axios.get(apiUrl, {
       headers: {
@@ -25,6 +25,7 @@ const Place = () => {
     })
     .then(response => {
       dispatch(setProvidedList(response.data.contents)); 
+      console.log(response);
     })
     .catch(error => {
       console.error('API 호출 에러:', error);

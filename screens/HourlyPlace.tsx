@@ -17,8 +17,8 @@ const HourlyPlace = () => {
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.10.80:8085/place/hourly';
-    const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
+    const apiUrl = 'http://192.168.0.53:8085/place/hourly';
+    const appKey = 'OVBKI4CwsKaddtucxy7kE1i95vPgNrFc5OjLxED4';
 
     // API 호출
     axios.get(apiUrl, {
@@ -33,10 +33,10 @@ const HourlyPlace = () => {
     .then(response => {
       // API 응답 결과를 상태에 저장
       setApiResponse(response.data);
-      console.log(JSON.stringify(response.data.contents));
+      console.log(JSON.stringify(response.data));
     })
     .catch(error => {
-      console.error('API 호출 에러:', error);
+      // console.error('실시간 정보 API 호출 에러:', error);
     });
   };
   useEffect(() => {

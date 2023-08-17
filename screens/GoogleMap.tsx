@@ -4,7 +4,7 @@ import { ActivityIndicator, StyleSheet, View, Text, ToastAndroid } from "react-n
 import { PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setModalVisible, setPoiList, setSelectedID, setSelectedName, setProvidedList } from "../store";
+import { RootState, setModalVisible, setPoiList, setSelectedID, setSelectedName, setProvidedList, setSelectedCongLv } from "../store";
 import { setLocation } from "../store";
 import axios from "axios";
 import { MapModal } from "./modal/MapModal";
@@ -29,7 +29,6 @@ export default function LocationExample() {
 
   const rendering = useSelector((state: RootState) => state.rendering);
 
-
   const areaLLCode = ['11', '41', '28'];  // 11 = 서울, 41 = 경기, 28 = 인천
 
   // console.log("장소 이름 : ", searchedName);
@@ -49,8 +48,8 @@ export default function LocationExample() {
 
   // 제공 가능한 장소에 대한 정보를 호출
   const providedListApiCall = () => {
-    const apiUrl = 'http://192.168.10.80:8085/place/data';
-    const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
+    const apiUrl = 'http://192.168.0.53:8085/place/data';
+    const appKey = 'l7xx609575498cc44d358d3b919deed6542e';
 
     axios.get(apiUrl, {
       headers: {
@@ -64,9 +63,9 @@ export default function LocationExample() {
         console.log("제공 가능 장소 api 호출")
       })
       .catch(error => {
-        console.error('API 호출 에러:', error);
+        console.error('제공 가능 장소 API 호출 에러:', error);
       });
-  };
+  };  
 
   // 좌표에 대한 정보를 호출
   const coordinateApiCall = (value: any) => {
@@ -91,20 +90,21 @@ export default function LocationExample() {
     };
 
     // API 호출 URL과 API 키 설정 (실제 값으로 수정)
-    const apiUrl = 'http://192.168.10.80:8085/place/search';
-    const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
+    const apiUrl = 'http://192.168.0.53:8085/place/search';
+    const appKey = 'l7xx609575498cc44d358d3b919deed6542e';
 
     // API 호출
     axios.get(apiUrl, {
       params: PoiSearchDto,
       headers: {
         appkey: appKey,
-        'accept': 'application/json',
+        'accept': 'application/json', 
         'Content-Type': 'application/json',
       },
     })
       .then(response => {
         const pois = response.data.searchPoiInfo.pois.poi; // 호출한 api로부터 필요한 정보만 추출
+
         let extractedData = pois.map((item: Poi) => ({
           id: item.id,  // 장소 id
           name: item.name,  // 장소 이름
@@ -112,16 +112,19 @@ export default function LocationExample() {
           centerLon: item.newAddressList.newAddress[0].centerLon,  // 경도
         }));
 
+
         // api 데이터를 제공 가능한 장소인지 필터링하여 제공 가능한 장소만으로 새로운 배열 생성
         extractedData = extractedData.filter((itemPoi: { id: string; }) => {
           return providedList.some((itemProvided: { poiId: string; }) => itemProvided.poiId === itemPoi.id);
         });
 
+        console.log(extractedData);
         dispatch(setPoiList(extractedData)); // 추출한 데이터를 상태에 저장
         console.log("좌표 api 호출")
+
       })
       .catch(error => {
-        // console.error('좌표 API 호출 에러:', error);
+        console.error('좌표 API 호출 에러:', error);
       });
   };
 
@@ -135,8 +138,8 @@ export default function LocationExample() {
           poiId: item.id,
         };
 
-        const apiUrl = 'http://192.168.10.80:8085/place/congestion';
-        const appKey = 'MevCaPki9QAo5IYznEp63wfu4ZypxOYaj0zQ0QJ6';
+        const apiUrl = 'http://192.168.0.53:8085/place/congestion';
+        const appKey = 'l7xx609575498cc44d358d3b919deed6542e';
 
         const response = await axios.get(apiUrl, {
           params: CongestionResponseDto,
@@ -148,6 +151,7 @@ export default function LocationExample() {
         });
 
         const congestionLevel = response.data.contents.rltm[0].congestionLevel;
+        console.log(congestionLevel);
 
         console.log("실시간 혼잡도 api 호출")
         console.log("----------------------------------------------------------")
@@ -157,7 +161,7 @@ export default function LocationExample() {
         };
 
       } catch (error) {
-        console.error('MapCongestion API 호출 에러:', error);
+        console.error('실시간 혼잡도 API 호출 에러:', error);
         return item;
       }
     }));
@@ -183,6 +187,7 @@ export default function LocationExample() {
           longitude: longitude
         })
         setLoading(false);  // 위치 정보를 받아왔으니 로딩 상태를 false로 변경
+        realTimeCongestionApiCall();
       })();
   }, []);
 
@@ -192,6 +197,9 @@ export default function LocationExample() {
     });
     realTimeCongestionApiCall();
   }, [rendering]);
+
+  useEffect(() => {
+  })
 
   const onRegionChange = (region: any) => {
     // setLocation({"latitude": region.latitude, "longitude": region.longitude});
@@ -203,6 +211,10 @@ export default function LocationExample() {
     dispatch(setSelectedName(item.name));
     dispatch(setSelectedID(item.id));
     dispatch(setModalVisible(!modalVisible));
+    if (item.congestionLevel !== undefined) {
+      dispatch(setSelectedCongLv(item.congestionLevel));
+      console.log("혼잡도는 ? ", item.congestionLevel)
+    }
   }
 
   // console.log(location);

@@ -30,7 +30,7 @@ const MapCongestion = () => {
     newAddressList: any
   }
 
-  console.log("poiList : ", poiList)
+  // console.log("poiList : ", poiList)
 
   // searchedName의 state를 TextInput에 입력한 글자로 바꿈
   const textChange = (text: string) => {
@@ -99,9 +99,9 @@ const MapCongestion = () => {
               <Pressable onPress={toggleExplainModal} style={styles.closeButton}>
                 <Image source={require('../assets/images/close-icon.png')} style={styles.closeIcon} />
               </Pressable>
-              <Text style={styles.ex_levelOne}><Text style={{ color: '#C2F5EF', fontWeight: 'bold' }}>여유(1단계)</Text> : 전방의 시야가 트여있는 상태</Text>
-              <Text style={styles.ex_levelTwo}><Text style={{ color: '#7BD1D1', fontWeight: 'bold' }}>보통(2단계)</Text> : 전방의 시야가 다소 막힌 상태</Text>
-              <Text style={styles.ex_levelThree}><Text style={{ color: '#F5B06C', fontWeight: 'bold' }}>혼잡(3단계)</Text> : 지나가는 사람과 서로 부딪힐 수 있는 상태</Text>
+              <Text style={styles.ex_levelOne}><Text style={{ color: '#ACF1E9', fontWeight: 'bold' }}>여유(1단계)</Text> : 전방의 시야가 트여있는 상태</Text>
+              <Text style={styles.ex_levelTwo}><Text style={{ color: '#54B2B2', fontWeight: 'bold' }}>보통(2단계)</Text> : 전방의 시야가 다소 막힌 상태</Text>
+              <Text style={styles.ex_levelThree}><Text style={{ color: '#F39C46', fontWeight: 'bold' }}>혼잡(3단계)</Text> : 지나가는 사람과 서로 부딪힐 수 있는 상태</Text>
               <Text style={styles.ex_levelFour}><Text style={{ color: '#D36E85', fontWeight: 'bold' }}>매우혼잡(4단계)</Text> : 매우 혼잡하여 불쾌할 수 있는 상태</Text>
               <Text style={styles.ex_congestion}>
                 * 혼잡도는 특정 장소의 추정 방문자 수를 연면적('㎡')으로 나눈 값으로, 단위 면적('㎡')당 추정 방문자의 수를 의미합니다. {'\n'}

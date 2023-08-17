@@ -2,6 +2,8 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 // state들의 타입 지정
 export type RootState = {
+  selectedCongAvg: string,
+  selectedCongLv: number,
   startDate: string,
   lastDate: string,
   visitorCount: number,
@@ -20,6 +22,26 @@ export type RootState = {
   selectedTime: any,
   location: any,
 }
+
+const selectedCongAvg = createSlice({
+  name: 'selectedCongAvg',
+  initialState: '',
+  reducers: {
+    setSelectedCongAvg(state, action) {
+      return action.payload;
+    }
+  }
+})
+
+const selectedCongLv = createSlice({
+  name: 'selectedCongLv',
+  initialState: 0,
+  reducers: {
+    setSelectedCongLv(state, action) {
+      return action.payload;
+    }
+  }
+})
 
 const startDate = createSlice({
   name: 'startDate',
@@ -198,6 +220,8 @@ const location = createSlice({
 
 export default configureStore({
   reducer: {
+    selectedCongAvg: selectedCongAvg.reducer,
+    selectedCongLv: selectedCongLv.reducer,
     startDate: startDate.reducer,
     lastDate: lastDate.reducer,
     visitorCount: visitorCount.reducer,
@@ -218,6 +242,8 @@ export default configureStore({
   }
 })
 
+export const { setSelectedCongAvg } = selectedCongAvg.actions;
+export const { setSelectedCongLv } = selectedCongLv.actions;
 export const { setStartDate } = startDate.actions;
 export const { setLastDate } = lastDate.actions;
 export const { setVisitorCount } = visitorCount.actions;
